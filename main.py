@@ -3,7 +3,7 @@ from PyQt5.QtGui import QPixmap
 from GUI.Ui_Loading import Ui_Form_loading
 # import res_rc
 import sys
-sys.path.append("GUI")
+# sys.path.append("GUI")
 
 class Widget_loading(QSplashScreen, Ui_Form_loading):
     def __init__(self, pic: QPixmap):
@@ -18,10 +18,10 @@ def main():
     # QPixmap()
     uiSplash = Widget_loading(img)
     uiSplash.show()
-    import Call_Ui_SerialPort
-    myWin = Call_Ui_SerialPort.MyMainWindow()
+    import Smartcar_SerialPort
+    myWin = Smartcar_SerialPort.MyMainWindow()
     # myWin.setWindowTitle("PyQt智能车串口调试助手")
-    myWin.test()
+    # myWin.test()
     myWin.show()
 
     uiSplash.finish(myWin)

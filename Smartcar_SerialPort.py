@@ -2,14 +2,15 @@
 
 import re
 import sys
-sys.path.append("GUI")
+
+# sys.path.append("GUI")
 import binascii
 import time
 from PyQt5.QtCore import QTimer, Qt, QUrl
 # from PyQt5.QtWidgets import *
 from PyQt5.QtSerialPort import QSerialPort, QSerialPortInfo
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QListWidgetItem, QMessageBox, QGraphicsScene
-from PyQt5.QtGui import QImage, QPixmap, QPainter
+from PyQt5.QtGui import QImage, QPixmap, QPainter,QBitmap
 from PyQt5 import QtGui
 # from PyQt5.QtWebEngineWidgets import *
 from GUI.Ui_SerialPort import Ui_Form
@@ -17,10 +18,8 @@ from PyQt5.QtCore import QDate
 from GUI.ParaItem import Widget_ParaItem
 from PyQt5.QtCore import QSize
 import parameter
-import bitarray
-from OpenCV import OpenCVUse
-
-
+# import bitarray
+# from OpenCV import OpenCVUse
 
 
 # import numpy as np
@@ -29,12 +28,19 @@ class MyMainWindow(QWidget, Ui_Form):
     def __init__(self, parent=None):
         super(MyMainWindow, self).__init__(parent)
         self.setupUi(self)
+        self.read_para_json()
         # 设置实例
         # self.isOpenUART=False
         self.create_items()
         # 设置信号与槽
         self.create_signal_slot()
 
+    def read_para_json(self): #解析parameter.json
+        try:
+            parameter.open_json()
+        except:
+            QMessageBox.warning(self,'警告','未找到正确的parameter.json')
+            parameter.parameterList.clear()
     # 设置实例
     def create_items(self):
         # Qt 串口类
@@ -64,10 +70,11 @@ class MyMainWindow(QWidget, Ui_Form):
         # self.listWidget_para.show()
 
         # 图像类
-        self.img = QImage()
+        self.img = QPixmap()
         self.label_img.label_position = self.label_position  # 为了在label_img能改label_pasition
+        self.label_img.label_pause=self.label_pause# 为了在label_img能改label_pause
         # 上位机改参数类
-        self.readyToGetParas: bool = False
+        self.ready_to_get_paras: bool = False
 
     # 设置信号与槽
     def create_signal_slot(self):
@@ -81,9 +88,9 @@ class MyMainWindow(QWidget, Ui_Form):
         self.hexSending_checkBox.stateChanged.connect(self.hex_sending_clicked)
         # self.About_Button.clicked.connect(self.Goto_GitHub)
         self.pushButton_readMCU.clicked.connect(self.send_read_mcu)
-        self.checkBox_UseOpenCV.stateChanged.connect(self.on_open_cv_use_clicked)
+        # self.checkBox_UseOpenCV.stateChanged.connect(self.on_open_cv_use_clicked)
         self.checkBox_showGrid.stateChanged.connect(self.on_show_grid_changed)
-
+        self.pushButton_saveImg.clicked.connect(self.save_img)
     # 跳转到 GitHub 查看源代码
     # def Goto_GitHub(self):
     #     self.browser = QWebEngineView()
@@ -161,25 +168,33 @@ class MyMainWindow(QWidget, Ui_Form):
                 self.com.clear()
                 cb_index = self.comboBox_imgType.currentIndex()
                 if self.cb_index == 0:  # 二值化图像
-                    imgbits = bitarray.bitarray(endian='big')
-                    imgbits.frombytes(bytes(self.imgrxData[2:]))
+                    # imgbits = bitarray.bitarray(endian='big')
+                    # imgbits.frombytes(bytes(self.imgrxData[2:]))
                     # print(self.imgrxData)
-                    imgbytes = imgbits.unpack(zero=b'\x66', one=b'\x00')
+                    # imgbytes = imgbits.unpack(zero=b'\x66', one=b'\x00')
+                    # self.img = QImage(imgbytes, self.imgWidth,
+                    #               self.imgHeight, QImage.Format_Grayscale8)
+                    self.img=QBitmap.fromData((QSize(self.imgWidth,self.imgHeight,),bytes(self.imgrxData[2:]),QImage.Format_Mono))
                     # print(imgbytes)
                 elif self.cb_index == 1:  # 灰度图像
-                    imgbytes = bytes(self.imgrxData[2:])
+                    # imgbytes = bytes(self.imgrxData[2:])
+                    # self.img = QImage(imgbytes, self.imgWidth,self.imgHeight, QImage.Format_Mono)
+                    imgbytes=bytes([255 if b>0 else 0 for b in self.imgrxData[2:]])
+                    self.img=QBitmap.fromImage(QImage(imgbytes, self.imgWidth,self.imgHeight, QImage.Format_Grayscale8))
+                    # import numpy as np
+                    # a=np.frombuffer(bytes(self.imgrxData[2:]),dtype=np.uint8)*128
+                    # imgbytes=bytes(a)
                 # OpenCVUse.process(imgbytes, self.imgHeight, self.imgWidth)
-                self.img = QImage(imgbytes, self.imgWidth,
-                                  self.imgHeight, QImage.Format_Grayscale8)
+
                 # print(self.img.height())
                 # print(self.img.width())
                 # print(self.img.dotsPerMeterY())
                 # print(self.img.dotsPerMeterX())
                 # self.img=QPixmap.loadFromData()
-                size = self.label_img.size()
-                self.label_img.setPixmap(QPixmap.fromImage(self.img))
+                # size = self.label_img.size()
+                self.label_img.setPixmap(self.img)
                 self.imgrxData.clear()
-        elif tabWidget_currentIndex == 2 and self.readyToGetParas:  # 调参模式 且 已发送 hyxr
+        elif tabWidget_currentIndex == 2 and self.ready_to_get_paras:  # 调参模式 且 已发送 hyxr
             try:
                 for i, item in enumerate(self.paraWidgets):
                     rxData = bytes(self.com.read(4))
@@ -192,7 +207,7 @@ class MyMainWindow(QWidget, Ui_Form):
             except:
                 QMessageBox.critical(self, '严重错误', '串口接收数据错误')
             finally:
-                self.readyToGetParas = False
+                self.ready_to_get_paras = False
         else:
             pass
 
@@ -279,14 +294,14 @@ class MyMainWindow(QWidget, Ui_Form):
     def send_read_mcu(self):
         if self.com.isOpen():
             self.com.write(b'hyxr')
-            self.readyToGetParas = True
+            self.ready_to_get_paras = True
 
-    def on_open_cv_use_clicked(self):
-        if self.checkBox_UseOpenCV.isChecked():
-            OpenCVUse.init()
-            # self.test()
-        else:
-            OpenCVUse.close()
+    # def on_open_cv_use_clicked(self):
+    #     if self.checkBox_UseOpenCV.isChecked():
+    #         OpenCVUse.init()
+    #         # self.test()
+    #     else:
+    #         OpenCVUse.close()
 
     def on_show_grid_changed(self, a0: int):
         # print(a0)
@@ -297,6 +312,13 @@ class MyMainWindow(QWidget, Ui_Form):
             self.label_img.enable_grid = True
             self.label_img.calculate_grid_points()
             self.label_img.repaint()
+
+    def save_img(self):
+        # pass
+        s=str(int(time.time()))
+        self.label_img.qpix.save("./output/"+s+".jpg","jpg",-1)
+        # QMessageBox.warning(self, '成功', '保存成功')
+        QMessageBox.information(self,'成功', '保存成功')
 
     def set_widgets_enabled(self, enable: bool):  # 图像模式
         self.Com_Close_Button.setEnabled(not enable)
@@ -336,35 +358,49 @@ class MyMainWindow(QWidget, Ui_Form):
         self.tabWidget.setCurrentIndex(1)
         self.imgWidth = 80
         self.imgHeight = 60
-        testbytes = b'\x00\x00\xff\xff\xff\xff\xff\xff\xff\xff' * \
-                    16 + b'\xff\xff\xff\xff\xff\xff\xff\xff\xff\x0f' * 44
-        imgbits = bitarray.bitarray(endian='big')
-        imgbits.frombytes(testbytes)
+        # testbytes = b'\x00\x00\xff\xff\xff\xff\xff\xff\xff\xff' * \
+        #             16 + b'\xff\xff\xff\xff\xff\xff\xff\xff\xff\x0f' * 44
+        testbytes = (b'\x00\x00'*8+b'\xfe\x91\x01\x01\x01\x01\xff\xff'*8) * \
+                    16 + b'\xff\xff\xff\xff\xff\xff\xff\xff\xff\x00'*8 * 44     
+        # imgbits = bitarray.bitarray(endian='big')
+        # imgbits.frombytes(testbytes)
         # print(self.imgrxData)
-        imgbytes = imgbits.unpack(zero=b'\x66', one=b'\x00')
+        # imgbytes = imgbits.unpack(zero=b'\x01', one=b'\x00')
         # print(imgbytes)
         # self.label_img.setScaledContents(True)
         # self.label_img.setAlignment(Qt.AlignCenter)
-        if self.checkBox_UseOpenCV.isChecked():
-            OpenCVUse.process(imgbytes, self.imgHeight, self.imgWidth)
-        self.img = QImage(imgbytes, self.imgWidth,
-                          self.imgHeight, QImage.Format_Grayscale8)
+        # if self.checkBox_UseOpenCV.isChecked():
+        #     OpenCVUse.process(imgbytes, self.imgHeight, self.imgWidth)
 
+        # self.img = QImage(testbytes, self.imgWidth,
+        #                 self.imgHeight, QImage.Format_Mono)
+        # self.img=QBitmap.fromData(QSize(self.imgWidth,self.imgHeight,),testbytes,QImage.Format_Mono)
+        # testbytes=bytearray(testbytes)
+        testbytes=bytes([255 if b>0 else 0 for b in testbytes])
+        self.img=QPixmap.fromImage(QImage(testbytes, self.imgWidth,self.imgHeight, QImage.Format_Grayscale8))
+        
+        # self.img=QBitmap.fromData(QSize(self.imgWidth,self.imgHeight,),testbytes,QImage.Format_Indexed8)
+        # self.img=self.img.convertToFormat(QImage.Format_Grayscale8)
         # print(self.img.height())
         # print(self.img.width())
         # print(self.img.dotsPerMeterY())
         # print(self.img.dotsPerMeterX())
         # self.img=QPixmap.loadFromData()
         # self.label_img.setScaledContents(False)
-        size = self.label_img.size()
-        self.label_img.setPixmap(QPixmap.fromImage(self.img))
+        # size = self.label_img.size()
+        self.label_img.setPixmap(self.img)
+
+    # def keyPressEvent(self, a0: QtGui.QKeyEvent):
+    #     if a0.key() == Qt.Key_P:
+    #         print("Key press")
+    #         # QMessageBox("critical","haha")
 
 
 def main():
     app = QApplication(sys.argv)
     my_win = MyMainWindow()
     # mywin
-    # myWin.test()
+    # my_win.test()
     my_win.show()
     # myWin.showFullScreen()
 

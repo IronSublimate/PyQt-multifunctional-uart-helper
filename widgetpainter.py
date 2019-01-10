@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QLabel
+from PyQt5.QtWidgets import QWidget, QLabel,QMessageBox
 from PyQt5.QtCore import Qt, QPointF, QPoint, QLineF
 from PyQt5.QtGui import QPainter, QPaintEvent, QPixmap, QMouseEvent, QPen
 from PyQt5 import QtGui
@@ -12,10 +12,11 @@ class WidgetPainter(QWidget):
         super(WidgetPainter, self).__init__(parent)
         # self.painter3 = QPainter(self)
         self.qpix = QPixmap()
-        self.parentUi = None
+        # self.parentUi = None
         self.imgWidth = 80
         self.imgHeight = 60
         self.label_position: QLabel = None
+        self.label_pause: QLabel=None
         self.grid_points = []
         self.enable_grid = False
         self.pause = False
@@ -70,5 +71,10 @@ class WidgetPainter(QWidget):
 
     def keyPressEvent(self, a0: QtGui.QKeyEvent):
         if a0.key() == Qt.Key_P:
-            print("Key press")
+            # print("Key press")
             self.pause = not self.pause
+            if self.pause:
+                self.label_pause.setText("已暂停")
+            else:
+                self.label_pause.clear()
+            
