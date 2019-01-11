@@ -13,7 +13,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QListWidgetItem,
 from PyQt5.QtGui import QImage, QPixmap, QPainter, QBitmap
 from PyQt5 import QtGui
 # from PyQt5.QtWebEngineWidgets import *
-from GUI.Ui_SerialPort import Ui_Form
+from GUI.Ui_SerialPort import Ui_MainWindow
 from PyQt5.QtCore import QDate
 from GUI.ParaItem import Widget_ParaItem
 from PyQt5.QtCore import QSize
@@ -26,7 +26,7 @@ import parameter
 
 # import numpy as np
 
-class MyMainWindow(QWidget, Ui_Form):
+class MyMainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super(MyMainWindow, self).__init__(parent)
         self.setupUi(self)
