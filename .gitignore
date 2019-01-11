@@ -5,3 +5,5 @@ res/__pycache__
 GUI/__pycache__
 OpenCV/__pycache__
 __pycache__
+dist.zip
+.gitignore

@@ -3,6 +3,8 @@ from PyQt5.QtGui import QPixmap
 from GUI.Ui_Loading import Ui_Form_loading
 # import res_rc
 import sys
+
+
 # sys.path.append("GUI")
 
 class Widget_loading(QSplashScreen, Ui_Form_loading):

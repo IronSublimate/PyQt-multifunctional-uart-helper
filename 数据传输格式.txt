@@ -1,8 +1,0 @@
-上位机更新单片机：
-hyxw[数据号(0-255)][数据值int32(小端模式)]
-e.g. hyxw12300
-上位机更新单片机：
-上位机发送 hyxr
-上位机接收 
-for item in list:
-	item.value=[数据值int32(小端模式)]
