@@ -322,7 +322,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     def save_img(self):
         # pass
         s = str(int(time.time()))
-        self.label_img.qpix.save("./output/" + s + ".jpg", "jpg", -1)
+        self.label_img.qpix.save("./output/" + s + ".png", "png", -1)
         # QMessageBox.warning(self, '成功', '保存成功')
         QMessageBox.information(self, '成功', '保存成功')
 
@@ -364,10 +364,10 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.tabWidget.setCurrentIndex(1)
         self.imgWidth = 80
         self.imgHeight = 60
-        # testbytes = b'\x00\x00\xff\xff\xff\xff\xff\xff\xff\xff' * \
-        #             16 + b'\xff\xff\xff\xff\xff\xff\xff\xff\xff\x0f' * 44
-        testbytes = (b'\x00\x00' * 8 + b'\xfe\x91\x01\x01\x01\x01\xff\xff' * 8) * \
-                    16 + b'\xff\xff\xff\xff\xff\xff\xff\xff\xff\x00' * 8 * 44
+        testbytes = b'\x00\x00\xff\xff\xff\xff\xff\xff\xff\xff' * \
+                    16 + b'\xff\xff\xff\xff\xff\xff\xff\xff\xff\x0f' * 44
+        # testbytes = (b'\x00\x00' * 8 + b'\xfe\x91\x01\x01\x01\x01\xff\xff' * 8) * \
+        #             16 + b'\xff\xff\xff\xff\xff\xff\xff\xff\xff\x00' * 8 * 44
         # imgbits = bitarray.bitarray(endian='big')
         # imgbits.frombytes(testbytes)
         # print(self.imgrxData)
@@ -380,10 +380,10 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         # self.img = QImage(testbytes, self.imgWidth,
         #                 self.imgHeight, QImage.Format_Mono)
-        # self.img=QBitmap.fromData(QSize(self.imgWidth,self.imgHeight,),testbytes,QImage.Format_Mono)
+        self.img=QBitmap.fromData(QSize(self.imgWidth,self.imgHeight,),testbytes,QImage.Format_Mono)
         # testbytes=bytearray(testbytes)
-        testbytes = bytes([255 if b > 0 else 0 for b in testbytes])
-        self.img = QPixmap.fromImage(QImage(testbytes, self.imgWidth, self.imgHeight, QImage.Format_Grayscale8))
+        # testbytes = bytes([255 if b > 0 else 0 for b in testbytes])
+        # self.img = QPixmap.fromImage(QImage(testbytes, self.imgWidth, self.imgHeight, QImage.Format_Grayscale8))
 
         # self.img=QBitmap.fromData(QSize(self.imgWidth,self.imgHeight,),testbytes,QImage.Format_Indexed8)
         # self.img=self.img.convertToFormat(QImage.Format_Grayscale8)
