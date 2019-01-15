@@ -57,6 +57,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         # Qt ListWidget 类
         self.paraWidgets = []
         self.imgrxData = bytearray()
+        self.pararxData=bytearray()
         # self.imgbyte=bitarray.bitarray(endian='big')
         for i, para in enumerate(parameter.parameterList):
             para_widget = Widget_ParaItem(
@@ -178,8 +179,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                     # imgbytes = imgbits.unpack(zero=b'\x66', one=b'\x00')
                     # self.img = QImage(imgbytes, self.imgWidth,
                     #               self.imgHeight, QImage.Format_Grayscale8)
-                    self.img = QBitmap.fromData(
-                        (QSize(self.imgWidth, self.imgHeight, ), bytes(self.imgrxData[2:]), QImage.Format_Mono))
+                    self.img = QBitmap.fromData(QSize(self.imgWidth, self.imgHeight), bytes(self.imgrxData[2:]), QImage.Format_Mono)
                     # print(imgbytes)
                 elif self.cb_index == 1:  # 灰度图像
                     # imgbytes = bytes(self.imgrxData[2:])
@@ -202,18 +202,23 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 self.imgrxData.clear()
         elif tabWidget_currentIndex == 2 and self.ready_to_get_paras:  # 调参模式 且 已发送 hyxr
             try:
-                for i, item in enumerate(self.paraWidgets):
-                    rxData = bytes(self.com.read(4))
-                    value = int.from_bytes(
-                        rxData, 'little', signed=item.paras.signed)
-                    item.paras.value = value
-                    # self.listWidget_para.setIndexWidget(i, item)
-                    item.para_value.setText(str(value))
-                    print(value)
+                self.pararxData+=self.com.readAll()
+                if len(self.pararxData)>=len(self.paraWidgets)*4:
+                    #print(len(self.pararxData))
+                    for i, item in enumerate(self.paraWidgets):
+                        rxData = bytes(self.pararxData[0+i*4:3+i*4])
+                        value = int.from_bytes(
+                            rxData, 'little', signed=item.paras.signed)
+                        item.paras.value = value
+                        # self.listWidget_para.setIndexWidget(i, item)
+                        item.para_value.setText(str(value))
+                        print(i,value)
+                    self.pararxData.clear()
+                    self.ready_to_get_paras = False
             except:
                 QMessageBox.critical(self, '严重错误', '串口接收数据错误')
-            finally:
                 self.ready_to_get_paras = False
+                self.pararxData.clear()  
         else:
             pass
 

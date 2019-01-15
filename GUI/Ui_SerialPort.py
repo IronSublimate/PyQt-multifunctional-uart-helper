@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'SerialPort.ui'
+# Form implementation generated from reading ui file 'f:\NXP\2018NXP\2侯宇轩工具\PyQt5-SerialPort-smartcar\GUI\SerialPort.ui'
 #
 # Created by: PyQt5 UI code generator 5.11.3
 #
@@ -116,6 +116,11 @@ class Ui_MainWindow(object):
         self.lineEdit_width.setObjectName("lineEdit_width")
         self.gridLayout_2.addWidget(self.lineEdit_width, 1, 3, 1, 1)
         self.label_5 = QtWidgets.QLabel(self.tab_img)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_5.sizePolicy().hasHeightForWidth())
+        self.label_5.setSizePolicy(sizePolicy)
         self.label_5.setObjectName("label_5")
         self.gridLayout_2.addWidget(self.label_5, 1, 0, 1, 1)
         self.lineEdit_height = QtWidgets.QLineEdit(self.tab_img)
@@ -129,13 +134,13 @@ class Ui_MainWindow(object):
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.gridLayout_2.addItem(spacerItem, 0, 3, 1, 3)
         self.label_6 = QtWidgets.QLabel(self.tab_img)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_6.sizePolicy().hasHeightForWidth())
+        self.label_6.setSizePolicy(sizePolicy)
         self.label_6.setObjectName("label_6")
         self.gridLayout_2.addWidget(self.label_6, 1, 2, 1, 1)
-        self.comboBox_imgType = QtWidgets.QComboBox(self.tab_img)
-        self.comboBox_imgType.setObjectName("comboBox_imgType")
-        self.comboBox_imgType.addItem("")
-        self.comboBox_imgType.addItem("")
-        self.gridLayout_2.addWidget(self.comboBox_imgType, 0, 1, 1, 1)
         self.checkBox_UseOpenCV = QtWidgets.QCheckBox(self.tab_img)
         self.checkBox_UseOpenCV.setObjectName("checkBox_UseOpenCV")
         self.gridLayout_2.addWidget(self.checkBox_UseOpenCV, 0, 6, 1, 1)
@@ -144,9 +149,6 @@ class Ui_MainWindow(object):
         self.label_img.setFocusPolicy(QtCore.Qt.StrongFocus)
         self.label_img.setObjectName("label_img")
         self.gridLayout_2.addWidget(self.label_img, 3, 1, 1, 6)
-        self.pushButton_saveImg = QtWidgets.QPushButton(self.tab_img)
-        self.pushButton_saveImg.setObjectName("pushButton_saveImg")
-        self.gridLayout_2.addWidget(self.pushButton_saveImg, 2, 1, 1, 1)
         self.label_position = QtWidgets.QLabel(self.tab_img)
         self.label_position.setObjectName("label_position")
         self.gridLayout_2.addWidget(self.label_position, 2, 6, 1, 1)
@@ -159,6 +161,14 @@ class Ui_MainWindow(object):
         self.gridLayout_2.addWidget(self.label_pause, 2, 5, 1, 1)
         spacerItem1 = QtWidgets.QSpacerItem(269, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.gridLayout_2.addItem(spacerItem1, 1, 4, 1, 2)
+        self.pushButton_saveImg = QtWidgets.QPushButton(self.tab_img)
+        self.pushButton_saveImg.setObjectName("pushButton_saveImg")
+        self.gridLayout_2.addWidget(self.pushButton_saveImg, 2, 0, 1, 2)
+        self.comboBox_imgType = QtWidgets.QComboBox(self.tab_img)
+        self.comboBox_imgType.setObjectName("comboBox_imgType")
+        self.comboBox_imgType.addItem("")
+        self.comboBox_imgType.addItem("")
+        self.gridLayout_2.addWidget(self.comboBox_imgType, 0, 0, 1, 2)
         self.tabWidget.addTab(self.tab_img, "")
         self.tab_parameter = QtWidgets.QWidget()
         self.tab_parameter.setObjectName("tab_parameter")
@@ -320,7 +330,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.addLayout(self.verticalLayout)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1099, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1099, 26))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -345,8 +355,8 @@ class Ui_MainWindow(object):
         self.textEdit_Recive.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Noto Sans\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'SimSun\';\"><br /></p></body></html>"))
+"</style></head><body style=\" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
         self.label_2.setText(_translate("MainWindow", "发送区"))
         self.hexSending_checkBox.setText(_translate("MainWindow", "16进制发送"))
         self.Send_Button.setText(_translate("MainWindow", "发送"))
@@ -356,12 +366,12 @@ class Ui_MainWindow(object):
         self.label_5.setText(_translate("MainWindow", "高"))
         self.lineEdit_height.setText(_translate("MainWindow", "60"))
         self.label_6.setText(_translate("MainWindow", "宽"))
-        self.comboBox_imgType.setItemText(0, _translate("MainWindow", "二值化图像"))
-        self.comboBox_imgType.setItemText(1, _translate("MainWindow", "灰度图像(单片机解压)"))
         self.checkBox_UseOpenCV.setText(_translate("MainWindow", "使用OpenCV查看图像"))
-        self.pushButton_saveImg.setText(_translate("MainWindow", "保存图像"))
         self.label_position.setText(_translate("MainWindow", "鼠标位置 x:  0,y:  0"))
         self.checkBox_showGrid.setText(_translate("MainWindow", "显示网格线"))
+        self.pushButton_saveImg.setText(_translate("MainWindow", "保存图像"))
+        self.comboBox_imgType.setItemText(0, _translate("MainWindow", "二值化图像"))
+        self.comboBox_imgType.setItemText(1, _translate("MainWindow", "灰度图像(单片机解压)"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_img), _translate("MainWindow", "查看图像"))
         self.label_4.setText(_translate("MainWindow", "参数"))
         self.pushButton_readMCU.setText(_translate("MainWindow", "更新上位机数据"))
