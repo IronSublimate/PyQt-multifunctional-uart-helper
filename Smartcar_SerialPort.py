@@ -113,7 +113,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         if len(txData) == 0:
             return
         if self.hexSending_checkBox.isChecked() == False:
-            self.com.write(txData.encode('UTF-8'))
+            codetype=self.comboBox_codetype.currentText()
+            self.com.write(txData.encode(codetype))
         else:
             Data = txData.replace(' ', '')
             # 如果16进制不是偶数个字符, 去掉最后一个, [ ]左闭右开
@@ -143,11 +144,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             except:
                 QMessageBox.critical(self, '严重错误', '串口接收数据错误')
             if self.hexShowing_checkBox.isChecked() == False:
-                try:
-                    self.textEdit_Recive.insertPlainText(
-                        rxData.decode('UTF-8'))
-                except:
-                    pass
+                codetype=self.comboBox_codetype.currentText()
+                self.textEdit_Recive.insertPlainText(rxData.decode(codetype,errors='replace'))
             else:
                 Data = binascii.b2a_hex(rxData).decode('ascii')
                 # re 正则表达式 (.{2}) 匹配两个字母

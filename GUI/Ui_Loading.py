@@ -75,7 +75,7 @@ class Ui_Form_loading(object):
         _translate = QtCore.QCoreApplication.translate
         Form_loading.setWindowTitle(_translate("Form_loading", "Form"))
         self.Title.setText(_translate("Form_loading", "PyQt智能车串口调试助手"))
-        self.Author.setText(_translate("Form_loading", "作者：侯宇轩"))
+        self.Author.setText(_translate("Form_loading", "北京理工大学  侯宇轩"))
         self.label.setText(_translate("Form_loading", "加载中..."))
 
 import res_rc

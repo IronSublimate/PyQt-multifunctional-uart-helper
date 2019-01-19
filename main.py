@@ -25,7 +25,7 @@ def main():
     # myWin.setWindowTitle("PyQt智能车串口调试助手")
     # myWin.test()
     myWin.show()
-
+    uiSplash.progressBar.setValue(100)
     uiSplash.finish(myWin)
     sys.exit(app.exec_())
 
