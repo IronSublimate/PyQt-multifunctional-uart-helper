@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'f:\NXP\2018NXP\2侯宇轩工具\PyQt5-SerialPort-smartcar\GUI\SerialPort.ui'
+# Form implementation generated from reading ui file 'SerialPort.ui'
 #
 # Created by: PyQt5 UI code generator 5.11.3
 #
@@ -180,6 +180,11 @@ class Ui_MainWindow(object):
         self.checkBox_showGrid.setObjectName("checkBox_showGrid")
         self.gridLayout_2.addWidget(self.checkBox_showGrid, 1, 6, 1, 1)
         self.label_pause = QtWidgets.QLabel(self.tab_img)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_pause.sizePolicy().hasHeightForWidth())
+        self.label_pause.setSizePolicy(sizePolicy)
         self.label_pause.setText("")
         self.label_pause.setObjectName("label_pause")
         self.gridLayout_2.addWidget(self.label_pause, 2, 5, 1, 1)
@@ -193,6 +198,15 @@ class Ui_MainWindow(object):
         self.comboBox_imgType.addItem("")
         self.comboBox_imgType.addItem("")
         self.gridLayout_2.addWidget(self.comboBox_imgType, 0, 0, 1, 2)
+        self.label_extra14bytes = QtWidgets.QLabel(self.tab_img)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_extra14bytes.sizePolicy().hasHeightForWidth())
+        self.label_extra14bytes.setSizePolicy(sizePolicy)
+        self.label_extra14bytes.setText("")
+        self.label_extra14bytes.setObjectName("label_extra14bytes")
+        self.gridLayout_2.addWidget(self.label_extra14bytes, 2, 4, 1, 1)
         self.tabWidget.addTab(self.tab_img, "")
         self.tab_parameter = QtWidgets.QWidget()
         self.tab_parameter.setObjectName("tab_parameter")
@@ -354,7 +368,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.addLayout(self.verticalLayout)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1099, 26))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1099, 30))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -362,7 +376,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         self.Com_Baud_Combo.setCurrentIndex(10)
         self.comboBox_stop.setCurrentIndex(0)
         self.comboBox_data.setCurrentIndex(3)
@@ -376,8 +390,8 @@ class Ui_MainWindow(object):
         self.textEdit_Recive.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
+"</style></head><body style=\" font-family:\'Noto Sans\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'SimSun\'; font-size:9pt;\"><br /></p></body></html>"))
         self.label_2.setText(_translate("MainWindow", "发送区"))
         self.hexSending_checkBox.setText(_translate("MainWindow", "16进制发送"))
         self.Send_Button.setText(_translate("MainWindow", "发送"))

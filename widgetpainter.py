@@ -1,6 +1,6 @@
-from PyQt5.QtWidgets import QWidget, QLabel,QMessageBox
+from PyQt5.QtWidgets import QWidget, QLabel, QMessageBox
 from PyQt5.QtCore import Qt, QPointF, QPoint, QLineF
-from PyQt5.QtGui import QPainter, QPaintEvent, QPixmap, QMouseEvent, QPen
+from PyQt5.QtGui import QPainter, QPaintEvent, QPixmap, QMouseEvent, QPen, QBrush
 from PyQt5 import QtGui
 
 
@@ -16,10 +16,18 @@ class WidgetPainter(QWidget):
         self.imgWidth = 80
         self.imgHeight = 60
         self.label_position: QLabel = None
-        self.label_pause: QLabel=None
+        self.label_pause: QLabel = None
         self.grid_points = []
         self.enable_grid = False
         self.pause = False
+        self.enable_extra_14_bytes: bool = False
+        self.extra_bytes_len: int = 0
+        self.extra_data: tuple = None
+        # [0]中心点的行数
+        # [1]中心点的列数
+        # [2]列左极限
+        # [3]列右极限
+        # [4]控制中心的列数
 
     def set_img_height_width(self, height: int, width: int):
         self.imgWidth = width
@@ -38,10 +46,10 @@ class WidgetPainter(QWidget):
         pix_width = self.width() / self.imgWidth
         pix_height = self.height() / self.imgHeight
         self.grid_points.clear()
-        while (x < self.width()):
+        while (x <= self.width()):
             self.grid_points.append(QLineF(x, 0, x, self.height()))
             x += pix_width
-        while (y < self.height()):
+        while (y <= self.height()):
             self.grid_points.append(QLineF(0, y, self.width(), y))
             y += pix_height
 
@@ -51,6 +59,16 @@ class WidgetPainter(QWidget):
 
         # painter.begin(self)
         painter.drawPixmap(0, 0, self.width(), self.height(), self.qpix)
+        if self.enable_extra_14_bytes and self.extra_data:
+            pix_width = self.width() / self.imgWidth
+            pix_height = self.height() / self.imgHeight
+            # painter.setPen(QPen(Qt.red, -14))
+            painter.setBrush(QBrush(Qt.red))
+            painter.drawEllipse(self.extra_data[1] * pix_width, self.extra_data[0] * pix_height, pix_width, pix_height)
+            painter.drawEllipse(self.extra_data[2] * pix_width, self.extra_data[0] * pix_height, pix_width, pix_height)
+            painter.drawEllipse(self.extra_data[3] * pix_width, self.extra_data[0] * pix_height, pix_width, pix_height)
+            painter.drawEllipse(self.extra_data[4] * pix_width, self.extra_data[0] * pix_height, pix_width, pix_height)
+            
         if self.enable_grid:
             painter.setPen(Qt.darkBlue)
             painter.drawLines(self.grid_points)
@@ -77,4 +95,3 @@ class WidgetPainter(QWidget):
                 self.label_pause.setText("已暂停")
             else:
                 self.label_pause.clear()
-            

@@ -1,0 +1,13 @@
+{
+    "baude rate": 115200,
+
+    "send_hex": false,
+    "receive_hex": false,
+    "encode": 0,
+
+    "img_height": 60,
+    "img_width": 80,
+    "img_type": 0,
+    "extra_14_bytes": true,
+    "show_grid": false
+}

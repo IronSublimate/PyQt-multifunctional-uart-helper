@@ -37,7 +37,20 @@ for item in list:
 1. *.ui 为界面文件  
 2. Ui_*.py pyuic编译.ui后的python文件  
 3. CMD_Pyinstaller.bat 为 pyinstaller 打包 exe 指令  
-4. ./res/icon_128.jpg 为应用程序图标  
+4. ./res/icon_128.jpg 为应用程序图标 
+5. parameter.json为调参模式下参数的数量，必须为32为整型。"name"可任意设置,"value"为上位机显示的初始值，可任意设置,"signed":为参数对应是否是有符号数 
+6. setting.json为上位机默认初始值。
+    "baude rate":默认波特率
+    "send_hex":是否以16进制发送
+    "receive_hex": 是否以16进制接收,
+    "encode": 0:utf-8,1:GB2312
+    "img_height":默认图像高度
+    "img_width":默认图像宽度
+    "img_type": 0:二进制图像,1:灰度图像
+    "extra_14_bytes":是否接收额外14字节数据
+    **是否接收额外14字节数据只能在该文件中改**
+    "show_grid": 是否显示网格
+
 
 ## 开发环境及工具
 1. Python3.6 , Python3.7

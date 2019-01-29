@@ -2,7 +2,7 @@
 
 import re
 import sys
-
+import json
 # sys.path.append("GUI")
 import binascii
 import time
@@ -31,6 +31,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         super(MyMainWindow, self).__init__(parent)
         self.setupUi(self)
         self.read_para_json()
+        self.read_setting_json()
         # 设置实例
         # self.isOpenUART=False
         self.create_items()
@@ -43,6 +44,31 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         except:
             QMessageBox.warning(self, '警告', '未找到正确的parameter.json')
             parameter.parameterList.clear()
+
+    def read_setting_json(self):
+        try:
+            f = open('setting.json', 'r')
+            data: dict = json.load(f)
+            # 串口设置
+            self.Com_Baud_Combo.setCurrentText(str(data["baude rate"]))
+            # 收发界面
+            self.hexSending_checkBox.setChecked(data['send_hex'])
+            self.hexShowing_checkBox.setChecked(data['receive_hex'])
+            self.comboBox_codetype.setCurrentIndex(data["encode"])
+            # 图像界面
+            self.lineEdit_height.setText(str(data['img_height']))
+            self.lineEdit_width.setText(str(data['img_width']))
+            self.comboBox_imgType.setCurrentIndex(data["img_type"])
+            self.label_img.enable_extra_14_bytes = data["extra_14_bytes"]
+            if data["extra_14_bytes"]:
+                self.label_extra14bytes.setText("额外接收14字节图像")
+                self.label_img.extra_bytes_len = 14
+            self.checkBox_showGrid.setChecked(data["show_grid"])
+
+        except:
+            QMessageBox.warning(self, '警告', '未找到正确的setting.json')
+        finally:
+            f.close()
 
     # 设置实例
     def create_items(self):
@@ -57,7 +83,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         # Qt ListWidget 类
         self.paraWidgets = []
         self.imgrxData = bytearray()
-        self.pararxData=bytearray()
+        self.pararxData = bytearray()
         # self.imgbyte=bitarray.bitarray(endian='big')
         for i, para in enumerate(parameter.parameterList):
             para_widget = Widget_ParaItem(
@@ -88,6 +114,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.Com_Refresh_Button.clicked.connect(
             self.com_refresh_button_clicked)
         self.com.readyRead.connect(self.com_receive_data)  # 接收数据
+        # self.com.connectNotify.connect(lambda x: print("New connect"))
         self.hexSending_checkBox.stateChanged.connect(self.hex_showing_clicked)
         self.hexSending_checkBox.stateChanged.connect(self.hex_sending_clicked)
         # self.About_Button.clicked.connect(self.Goto_GitHub)
@@ -113,7 +140,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         if len(txData) == 0:
             return
         if self.hexSending_checkBox.isChecked() == False:
-            codetype=self.comboBox_codetype.currentText()
+            codetype = self.comboBox_codetype.currentText()
             self.com.write(txData.encode(codetype))
         else:
             Data = txData.replace(' ', '')
@@ -139,88 +166,93 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     def com_receive_data(self):
         tabWidget_currentIndex = self.tabWidget.currentIndex()
         if tabWidget_currentIndex == 0:  # 收发模式
-            try:
-                rxData = bytes(self.com.readAll())
-            except:
-                QMessageBox.critical(self, '严重错误', '串口接收数据错误')
-            if self.hexShowing_checkBox.isChecked() == False:
-                codetype=self.comboBox_codetype.currentText()
-                self.textEdit_Recive.insertPlainText(rxData.decode(codetype,errors='replace'))
-            else:
-                Data = binascii.b2a_hex(rxData).decode('ascii')
-                # re 正则表达式 (.{2}) 匹配两个字母
-                hexStr = ' 0x'.join(re.findall('(.{2})', Data))
-                # 补齐第一个 0x
-                hexStr = '0x' + hexStr
-                self.textEdit_Recive.insertPlainText(hexStr)
-                self.textEdit_Recive.insertPlainText(' ')
+            self.com_receive_normal()
         elif tabWidget_currentIndex == 1:  # 图像模式
-            if len(self.imgrxData) == 0:
-                self.imgrxData = self.com.readAll()
-                if self.imgrxData[:2] != b'\x01\xfe':  # 不是图像的起始位
-                    self.imgrxData = bytearray()
-                    return
-                else:
-                    # self.imgrxData=self.imgrxData[2:]
-                    return
-            else:
-                self.imgrxData += self.com.readAll()
-            # if self.imgrxData[:2]==b'\x01\xfe' and self.imgrxData[-2:]==b'\xfe\x01':
+            self.com_receive_image()
+        elif tabWidget_currentIndex == 2:  # 调参模式 且 已发送 hyxr
+            self.com_receive_para()
+        else:
+            pass
 
-            if len(self.imgrxData) >= self.totalImgSize:
-                self.com.clear()
-                cb_index = self.comboBox_imgType.currentIndex()
-                if self.cb_index == 0:  # 二值化图像
-                    # imgbits = bitarray.bitarray(endian='big')
-                    # imgbits.frombytes(bytes(self.imgrxData[2:]))
-                    # print(self.imgrxData)
-                    # imgbytes = imgbits.unpack(zero=b'\x66', one=b'\x00')
-                    # self.img = QImage(imgbytes, self.imgWidth,
-                    #               self.imgHeight, QImage.Format_Grayscale8)
-                    self.img = QBitmap.fromData(QSize(self.imgWidth, self.imgHeight), bytes(self.imgrxData[2:]), QImage.Format_Mono)
-                    # print(imgbytes)
-                elif self.cb_index == 1:  # 灰度图像
-                    # imgbytes = bytes(self.imgrxData[2:])
-                    # self.img = QImage(imgbytes, self.imgWidth,self.imgHeight, QImage.Format_Mono)
-                    imgbytes = bytes([255 if b > 0 else 0 for b in self.imgrxData[2:]])
-                    self.img = QBitmap.fromImage(
-                        QImage(imgbytes, self.imgWidth, self.imgHeight, QImage.Format_Grayscale8))
-                    # import numpy as np
-                    # a=np.frombuffer(bytes(self.imgrxData[2:]),dtype=np.uint8)*128
-                    # imgbytes=bytes(a)
-                # OpenCVUse.process(imgbytes, self.imgHeight, self.imgWidth)
+    # 串口收发模式处理函数
+    def com_receive_normal(self):
+        try:
+            rxData = bytes(self.com.readAll())
+        except:
+            QMessageBox.critical(self, '严重错误', '串口接收数据错误')
+        if self.hexShowing_checkBox.isChecked() == False:
+            codetype = self.comboBox_codetype.currentText()
+            self.textEdit_Recive.insertPlainText(rxData.decode(codetype, errors='replace'))
+        else:
+            Data = binascii.b2a_hex(rxData).decode('ascii')
+            # re 正则表达式 (.{2}) 匹配两个字母
+            hexStr = ' 0x'.join(re.findall('(.{2})', Data))
+            # 补齐第一个 0x
+            hexStr = '0x' + hexStr
+            self.textEdit_Recive.insertPlainText(hexStr)
+            self.textEdit_Recive.insertPlainText(' ')
 
-                # print(self.img.height())
-                # print(self.img.width())
-                # print(self.img.dotsPerMeterY())
-                # print(self.img.dotsPerMeterX())
-                # self.img=QPixmap.loadFromData()
-                # size = self.label_img.size()
-                self.label_img.setPixmap(self.img)
+    # 串口图像模式处理函数
+    def com_receive_image(self):
+        if len(self.imgrxData) == 0:
+            self.imgrxData = self.com.readAll()
+            # print(type(self.imgrxData))
+            if self.imgrxData[:2] != b'\x01\xfe':  # 不是图像的起始位
                 self.imgrxData.clear()
-        elif tabWidget_currentIndex == 2 and self.ready_to_get_paras:  # 调参模式 且 已发送 hyxr
+                return
+            else:
+                # self.imgrxData=self.imgrxData[2:]
+                return
+        else:
+            self.imgrxData += self.com.readAll()
+        # if self.imgrxData[:2]==b'\x01\xfe' and self.imgrxData[-2:]==b'\xfe\x01':
+        if len(self.imgrxData) >= self.totalImgSize + 2 + self.label_img.extra_bytes_len:  # 校验位两位，其余14位为传的数据
+            self.com.clear()
+            # cb_index = self.comboBox_imgType.currentIndex()
+            self.label_img.extra_data = tuple(bytes(self.imgrxData[2:2 + self.label_img.extra_bytes_len]))  # 14位额外数据
+            # print(type( self.label_img.extra_data[0]))
+            # print(self.label_img.extra_data)
+            if self.cb_index == 0:  # 二值化图像
+                self.img = QBitmap.fromData(QSize(self.imgWidth, self.imgHeight),
+                                            bytes(self.imgrxData[2 + self.label_img.extra_bytes_len:]),
+                                            QImage.Format_Mono)
+            elif self.cb_index == 1:  # 灰度图像
+                # imgbytes = bytes(self.imgrxData[2:])
+                # self.img = QImage(imgbytes, self.imgWidth,self.imgHeight, QImage.Format_Mono)
+                imgbytes = bytes([255 if b > 0 else 0 for b in self.imgrxData[2 + self.label_img.extra_bytes_len:]])
+                self.img = QBitmap.fromImage(
+                    QImage(imgbytes, self.imgWidth, self.imgHeight, QImage.Format_Grayscale8))
+                # import numpy as np
+                # a=np.frombuffer(bytes(self.imgrxData[2:]),dtype=np.uint8)*128
+                # imgbytes=bytes(a)
+            # OpenCVUse.process(imgbytes, self.imgHeight, self.imgWidth)
+            self.label_img.setPixmap(self.img)
+            self.imgrxData.clear()
+
+    # 串口调参模式处理函数 且 已发送 hyxr
+    def com_receive_para(self):
+        if self.ready_to_get_paras:
             try:
-                self.pararxData+=self.com.readAll()
-                if len(self.pararxData)>=len(self.paraWidgets)*4:
-                    #print(len(self.pararxData))
+                self.pararxData += self.com.readAll()
+                if len(self.pararxData) >= len(self.paraWidgets) * 4:
+                    # print(len(self.pararxData))
                     for i, item in enumerate(self.paraWidgets):
-                        rxData = bytes(self.pararxData[0+i*4:3+i*4])
+                        rxData = bytes(self.pararxData[0 + i * 4:3 + i * 4])
                         value = int.from_bytes(
                             rxData, 'little', signed=item.paras.signed)
                         item.paras.value = value
                         # self.listWidget_para.setIndexWidget(i, item)
                         item.para_value.setText(str(value))
-                        print(i,value)
+                        print(i, value)
                     self.pararxData.clear()
                     self.ready_to_get_paras = False
             except:
                 QMessageBox.critical(self, '严重错误', '串口接收数据错误')
                 self.ready_to_get_paras = False
-                self.pararxData.clear()  
-        else:
-            pass
+                self.pararxData.clear()
 
-    # 串口刷新
+                # 串口刷新
+
     def com_refresh_button_clicked(self):
         self.Com_Name_Combo.clear()
         com = QSerialPort()
@@ -383,7 +415,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         # self.img = QImage(testbytes, self.imgWidth,
         #                 self.imgHeight, QImage.Format_Mono)
-        self.img=QBitmap.fromData(QSize(self.imgWidth,self.imgHeight,),testbytes,QImage.Format_Mono)
+        self.img = QBitmap.fromData(QSize(self.imgWidth, self.imgHeight, ), testbytes, QImage.Format_Mono)
         # testbytes=bytearray(testbytes)
         # testbytes = bytes([255 if b > 0 else 0 for b in testbytes])
         # self.img = QPixmap.fromImage(QImage(testbytes, self.imgWidth, self.imgHeight, QImage.Format_Grayscale8))
