@@ -219,7 +219,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             elif self.cb_index == 1:  # 灰度图像
                 # imgbytes = bytes(self.imgrxData[2:])
                 # self.img = QImage(imgbytes, self.imgWidth,self.imgHeight, QImage.Format_Mono)
-                imgbytes = bytes([255 if b > 0 else 0 for b in self.imgrxData[2 + self.label_img.extra_bytes_len:]])
+                imgbytes = bytes([255 if int.from_bytes(b,'little') > 0 else 0 for b in self.imgrxData[2 + self.label_img.extra_bytes_len:]])
                 self.img = QBitmap.fromImage(
                     QImage(imgbytes, self.imgWidth, self.imgHeight, QImage.Format_Grayscale8))
                 # import numpy as np
@@ -415,10 +415,10 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         # self.img = QImage(testbytes, self.imgWidth,
         #                 self.imgHeight, QImage.Format_Mono)
-        self.img = QBitmap.fromData(QSize(self.imgWidth, self.imgHeight, ), testbytes, QImage.Format_Mono)
-        # testbytes=bytearray(testbytes)
-        # testbytes = bytes([255 if b > 0 else 0 for b in testbytes])
-        # self.img = QPixmap.fromImage(QImage(testbytes, self.imgWidth, self.imgHeight, QImage.Format_Grayscale8))
+        # self.img = QBitmap.fromData(QSize(self.imgWidth, self.imgHeight, ), testbytes, QImage.Format_Mono)
+        testbytes=bytearray(testbytes)
+        testbytes = bytes([255 if int.from_bytes(b,'little') > 0 else 0 for b in testbytes])
+        self.img = QPixmap.fromImage(QImage(testbytes, self.imgWidth, self.imgHeight, QImage.Format_Grayscale8))
 
         # self.img=QBitmap.fromData(QSize(self.imgWidth,self.imgHeight,),testbytes,QImage.Format_Indexed8)
         # self.img=self.img.convertToFormat(QImage.Format_Grayscale8)
