@@ -8,6 +8,6 @@
     "img_height": 60,
     "img_width": 80,
     "img_type": 0,
-    "extra_14_bytes": false,
+    "extra_14_bytes": 1,
     "show_grid": false
 }

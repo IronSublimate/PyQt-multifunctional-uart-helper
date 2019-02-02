@@ -2,25 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d5c26d4f-5154-47ea-8a5f-b5c263d0534b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/setting.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/PyQt5-SerialPort-smartcar.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PyQt5-SerialPort-smartcar.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/SerialPort.ui" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/SerialPort.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/Ui_SerialPort.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/Ui_SerialPort.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Smartcar_SerialPort.py" beforeDir="false" afterPath="$PROJECT_DIR$/Smartcar_SerialPort.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/widgetpainter.py" beforeDir="false" afterPath="$PROJECT_DIR$/widgetpainter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/setting.json" beforeDir="false" afterPath="$PROJECT_DIR$/setting.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/PyQt5_SerialPort_smartcar$main.coverage" NAME="main Coverage Results" MODIFIED="1546947081339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -44,40 +38,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/setting.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="57">
-              <caret line="3" column="21" selection-start-line="3" selection-start-column="16" selection-end-line="3" selection-end-column="21" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="798">
-                <caret line="42" column="24" selection-start-line="42" selection-start-column="24" selection-end-line="42" selection-end-column="24" />
-              </first_editor>
-              <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LICENSE">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="266">
-              <caret line="14" column="31" selection-start-line="14" selection-start-column="29" selection-end-line="14" selection-end-column="31" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/widgetpainter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="475">
-              <caret line="73" column="23" lean-forward="true" selection-start-line="73" selection-start-column="23" selection-end-line="73" selection-end-column="23" />
+            <state relative-caret-position="1170">
+              <caret line="68" column="20" selection-start-line="68" selection-start-column="20" selection-end-line="68" selection-end-column="20" />
             </state>
           </provider>
         </entry>
@@ -85,17 +49,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/parameter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="646">
+            <state relative-caret-position="612">
               <caret line="34" column="20" selection-start-line="34" selection-start-column="20" selection-end-line="34" selection-end-column="20" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Smartcar_SerialPort.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3667">
-              <caret line="210" column="31" selection-start-line="210" selection-start-column="31" selection-end-line="210" selection-end-column="31" />
+            <state relative-caret-position="213">
+              <caret line="355" selection-start-line="355" selection-end-line="355" />
               <folding>
                 <element signature="e#8#17#0" expanded="true" />
               </folding>
@@ -106,8 +70,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="437">
-              <caret line="27" selection-start-line="27" selection-end-line="27" />
+            <state relative-caret-position="432">
+              <caret line="28" column="16" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="16" />
               <folding>
                 <element signature="e#0#55#0" expanded="true" />
               </folding>
@@ -154,22 +118,22 @@
         <option value="$PROJECT_DIR$/Call_Ui_SerialPort.py" />
         <option value="$PROJECT_DIR$/GUI/widgetpainter.py" />
         <option value="$PROJECT_DIR$/parameter.py" />
-        <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/GUI/ParaItem.py" />
         <option value="$PROJECT_DIR$/README.md" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/setting.py" />
         <option value="$PROJECT_DIR$/setting.json" />
         <option value="$PROJECT_DIR$/Smartcar_SerialPort.py" />
         <option value="$PROJECT_DIR$/widgetpainter.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/main.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="366" />
-    <option name="y" value="179" />
+    <option name="x" value="-10" />
+    <option name="y" value="-10" />
     <option name="width" value="930" />
-    <option name="height" value="808" />
+    <option name="height" value="810" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -187,11 +151,12 @@
             <path>
               <item name="PyQt5-SerialPort-smartcar" type="b2602c69:ProjectViewProjectNode" />
               <item name="PyQt5-SerialPort-smartcar" type="462c0819:PsiDirectoryNode" />
-              <item name="GUI" type="462c0819:PsiDirectoryNode" />
+              <item name=".idea" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="PyQt5-SerialPort-smartcar" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="PyQt5-SerialPort-smartcar" type="462c0819:PsiDirectoryNode" />
+              <item name="GUI" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -204,13 +169,14 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1548941106728" />
     <property name="last_opened_file_path" value="/usr/bin/bash" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="project.structure.last.edited" value="SDKs" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.django.DjangoModulesConfigurable" />
+    <property name="project.structure.side.proportion" value="0.28965518" />
+    <property name="settings.editor.selected.configurable" value="preferences.externalTools" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -243,9 +209,9 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="" />
+      <option name="SDK_HOME" value="F:\Program Files\Python\Python36\python.exe" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
@@ -287,9 +253,9 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="" />
+      <option name="SDK_HOME" value="F:\Program Files\Python\Python36\python.exe" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
@@ -398,10 +364,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1920" height="1080" extended-state="6" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21550801" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19705094" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info id="Designer" order="3" />
@@ -410,13 +376,13 @@
       <window_info id="UI Designer" order="6" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32838982" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32838982" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32719547" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.32944915" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.3286119" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32944915" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.3286119" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50053364" side_tool="true" weight="0.32838982" />
       <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.4994664" weight="0.32771337" />
@@ -481,13 +447,7 @@
     <option name="LAST_COMMIT_MESSAGE" value="保存图片格式改为png" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file:///usr/lib/python3.7/site-packages/PyQt5/QtSerialPort.pyi">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="191">
-          <caret line="85" column="16" selection-start-line="85" selection-start-column="10" selection-end-line="85" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file:///usr/lib/python3.7/site-packages/PyQt5/QtSerialPort.pyi" />
     <entry file="file://$PROJECT_DIR$/GUI/SerialPort.py" />
     <entry file="file://$PROJECT_DIR$/res/icon.jpg" />
     <entry file="file://$PROJECT_DIR$/res/res_rc.py">
@@ -504,60 +464,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2018.3/system/python_stubs/-2066100795/PyQt5/QtGui/QPaintEvent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="11" column="6" selection-start-line="11" selection-start-column="6" selection-end-line="11" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2018.3/system/python_stubs/-2066100795/PyQt5/QtGui/QPixmap.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="546">
-          <caret line="134" column="127" selection-start-line="134" selection-start-column="106" selection-end-line="134" selection-end-column="127" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2018.3/system/python_stubs/-2066100795/numpy/core/multiarray.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-368">
-          <caret line="1095" column="4" selection-start-line="1095" selection-start-column="4" selection-end-line="1095" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2018.3/system/python_stubs/-2066100795/binascii.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1482" />
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2018.3/system/python_stubs/-2066100795/PyQt5/QtWidgets/QCheckBox.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="71" column="8" selection-start-line="71" selection-start-column="8" selection-end-line="71" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2018.3/system/python_stubs/-2066100795/PyQt5/QtGui/QPainter.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2641">
-          <caret line="140" column="8" selection-start-line="140" selection-start-column="8" selection-end-line="140" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/lib/python3.7/site-packages/twisted/pair/test/test_tuntap.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="341" column="34" selection-start-line="341" selection-start-column="34" selection-end-line="341" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2018.3/system/python_stubs/-2066100795/PyQt5/QtSerialPort.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="123" column="8" selection-start-line="123" selection-start-column="8" selection-end-line="123" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2018.3/system/python_stubs/-2066100795/PyQt5/QtGui/QPaintEvent.py" />
+    <entry file="file://$USER_HOME$/.PyCharm2018.3/system/python_stubs/-2066100795/PyQt5/QtGui/QPixmap.py" />
+    <entry file="file://$USER_HOME$/.PyCharm2018.3/system/python_stubs/-2066100795/numpy/core/multiarray.py" />
+    <entry file="file://$USER_HOME$/.PyCharm2018.3/system/python_stubs/-2066100795/binascii.py" />
+    <entry file="file://$USER_HOME$/.PyCharm2018.3/system/python_stubs/-2066100795/PyQt5/QtWidgets/QCheckBox.py" />
+    <entry file="file://$USER_HOME$/.PyCharm2018.3/system/python_stubs/-2066100795/PyQt5/QtGui/QPainter.py" />
+    <entry file="file:///usr/lib/python3.7/site-packages/twisted/pair/test/test_tuntap.py" />
+    <entry file="file://$USER_HOME$/.PyCharm2018.3/system/python_stubs/-2066100795/PyQt5/QtSerialPort.py" />
     <entry file="file://$PROJECT_DIR$/OpenCV/OpenCVUse.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
@@ -578,7 +492,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/数据传输格式.txt" />
-    <entry file="file://$PROJECT_DIR$/../../../../code/python/img2ico/img2ico.py">
+    <entry file="file://F:/code/python/img2ico/img2ico.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/res/icon_128.ico">
@@ -610,71 +524,79 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/setting.py" />
-    <entry file="file://$PROJECT_DIR$/parameter.json">
-      <provider selected="true" editor-type-id="text-editor" />
+    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1566" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="9" column="4" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/setting.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="57">
+        <state relative-caret-position="54">
           <caret line="3" column="21" selection-start-line="3" selection-start-column="16" selection-end-line="3" selection-end-column="21" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="25" column="15" selection-start-line="25" selection-start-column="15" selection-end-line="25" selection-end-column="15" />
+        </state>
+      </provider>
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="798">
-            <caret line="42" column="24" selection-start-line="42" selection-start-column="24" selection-end-line="42" selection-end-column="24" />
-          </first_editor>
+          <first_editor relative-caret-position="-864" />
           <second_editor />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/LICENSE">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="14" column="31" selection-start-line="14" selection-start-column="29" selection-end-line="14" selection-end-column="31" />
+        <state relative-caret-position="216">
+          <caret line="12" column="17" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/parameter.json">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/widgetpainter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1170">
+          <caret line="68" column="20" selection-start-line="68" selection-start-column="20" selection-end-line="68" selection-end-column="20" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/parameter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
+        <state relative-caret-position="612">
           <caret line="34" column="20" selection-start-line="34" selection-start-column="20" selection-end-line="34" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Smartcar_SerialPort.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3667">
-          <caret line="210" column="31" selection-start-line="210" selection-start-column="31" selection-end-line="210" selection-end-column="31" />
-          <folding>
-            <element signature="e#8#17#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="27" selection-start-line="27" selection-end-line="27" />
+        <state relative-caret-position="432">
+          <caret line="28" column="16" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="16" />
           <folding>
             <element signature="e#0#55#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
+    <entry file="file://$PROJECT_DIR$/Smartcar_SerialPort.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="9" column="10" lean-forward="true" selection-start-line="9" selection-start-column="10" selection-end-line="9" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/widgetpainter.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="475">
-          <caret line="73" column="23" lean-forward="true" selection-start-line="73" selection-start-column="23" selection-end-line="73" selection-end-column="23" />
+        <state relative-caret-position="213">
+          <caret line="355" selection-start-line="355" selection-end-line="355" />
+          <folding>
+            <element signature="e#8#17#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -687,7 +609,7 @@
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.2" />
+                <option value="0.28965518" />
               </list>
             </option>
           </splitter-proportions>
@@ -711,7 +633,7 @@
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.2" />
+                <option value="0.28965518" />
               </list>
             </option>
           </splitter-proportions>
@@ -723,7 +645,7 @@
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.2" />
+                <option value="0.28965518" />
               </list>
             </option>
           </splitter-proportions>
@@ -735,7 +657,7 @@
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.2" />
+                <option value="0.28965518" />
               </list>
             </option>
           </splitter-proportions>
@@ -746,7 +668,7 @@
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.2" />
+                <option value="0.28965518" />
               </list>
             </option>
           </splitter-proportions>
