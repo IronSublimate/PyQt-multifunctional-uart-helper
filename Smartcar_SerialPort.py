@@ -10,7 +10,7 @@ from PyQt5.QtCore import QTimer, Qt, QUrl
 # from PyQt5.QtWidgets import *
 from PyQt5.QtSerialPort import QSerialPort, QSerialPortInfo
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QListWidgetItem, QMessageBox, QGraphicsScene
-from PyQt5.QtGui import QImage, QPixmap, QPainter, QBitmap
+from PyQt5.QtGui import QImage, QPixmap, QPainter, QBitmap, QTextCursor
 from PyQt5 import QtGui
 # from PyQt5.QtWebEngineWidgets import *
 from GUI.Ui_SerialPort import Ui_MainWindow
@@ -122,6 +122,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         # self.checkBox_UseOpenCV.stateChanged.connect(self.on_open_cv_use_clicked)
         self.checkBox_showGrid.stateChanged.connect(self.on_show_grid_changed)
         self.pushButton_saveImg.clicked.connect(self.save_img)
+        # self.textEdit_Recive.textChanged.connect(self.textEdit_Recive.moveCursor(QTextCursor.End))
 
     # 跳转到 GitHub 查看源代码
     # def Goto_GitHub(self):
