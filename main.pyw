@@ -21,7 +21,7 @@ def main():
     # QPixmap()
     uiSplash = Widget_loading(img)
     uiSplash.show()
-    import Smartcar_SerialPort
+    from src import Smartcar_SerialPort
     myWin = Smartcar_SerialPort.MyMainWindow()
     # myWin.setWindowTitle("PyQt智能车串口调试助手")
     # myWin.test()

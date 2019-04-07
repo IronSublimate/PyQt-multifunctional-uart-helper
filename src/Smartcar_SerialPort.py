@@ -254,6 +254,10 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
                 # 串口刷新
 
+    # 串口综合模式（改参数、波形、弹琴等）
+    def com_receive_other(self):
+        pass
+
     def com_refresh_button_clicked(self):
         self.Com_Name_Combo.clear()
         com = QSerialPort()
