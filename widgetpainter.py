@@ -15,14 +15,14 @@ class WidgetPainter(QWidget):
         # self.parentUi = None
         self.imgWidth = 80
         self.imgHeight = 60
-        self.label_position: QLabel = None
-        self.label_pause: QLabel = None
+        self.label_position = None#: QLabel
+        self.label_pause= None#: QLabel
         self.grid_points = []
         self.enable_grid = False
         self.pause = False
-        self.enable_extra_14_bytes: bool = False
-        self.extra_bytes_len: int = 0
-        self.extra_data: tuple = None
+        self.enable_extra_14_bytes = False
+        self.extra_bytes_len = 0
+        self.extra_data = None #tuple
         # [0]中心点的行数
         # [1]中心点的列数
         # [2]列左极限

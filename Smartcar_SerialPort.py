@@ -48,7 +48,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     def read_setting_json(self):
         try:
             f = open('setting.json', 'r')
-            data: dict = json.load(f)
+            data = json.load(f)
             # 串口设置
             self.Com_Baud_Combo.setCurrentText(str(data["baude rate"]))
             # 收发界面
@@ -104,7 +104,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.label_img.label_position = self.label_position  # 为了在label_img能改label_pasition
         self.label_img.label_pause = self.label_pause  # 为了在label_img能改label_pause
         # 上位机改参数类
-        self.ready_to_get_paras: bool = False
+        self.ready_to_get_paras = False
 
     # 设置信号与槽
     def create_signal_slot(self):
