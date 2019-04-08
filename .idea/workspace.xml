@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d5c26d4f-5154-47ea-8a5f-b5c263d0534b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uart.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Smartcar_SerialPort.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Smartcar_SerialPort.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.pyw" beforeDir="false" afterPath="$PROJECT_DIR$/main.pyw" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Smartcar_SerialPort.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Smartcar_SerialPort.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/uart.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/uart.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -47,8 +45,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/parameter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="612">
-              <caret line="34" column="20" selection-start-line="34" selection-start-column="20" selection-end-line="34" selection-end-column="20" />
+            <state relative-caret-position="414">
+              <caret line="23" column="18" selection-start-line="23" selection-start-column="18" selection-end-line="23" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -56,47 +54,61 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Smartcar_SerialPort.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-384">
-              <caret line="229" column="25" selection-start-line="229" selection-start-column="25" selection-end-line="229" selection-end-column="25" />
+            <state relative-caret-position="342">
+              <caret line="159" lean-forward="true" selection-start-line="159" selection-end-line="159" />
               <folding>
-                <element signature="e#8#17#0" expanded="true" />
-                <element signature="e#806#1064#0" />
-                <element signature="e#1124#1290#0" />
-                <element signature="e#1333#2354#0" />
-                <element signature="e#3987#5047#0" />
-                <element signature="e#5464#6423#0" />
-                <element signature="e#6478#6833#0" />
-                <element signature="e#6894#7570#0" />
-                <element signature="e#9685#10675#0" />
-                <element signature="e#10727#11031#0" />
-                <element signature="e#11091#11214#0" />
-                <element signature="e#11274#11339#0" />
-                <element signature="e#11397#11417#0" />
-                <element signature="e#11481#13109#0" />
-                <element signature="e#13159#13510#0" />
-                <element signature="e#13549#13649#0" />
-                <element signature="e#13655#13690#0" />
-                <element signature="e#13902#14179#0" />
-                <element signature="e#14213#14425#0" />
-                <element signature="e#14492#15119#0" />
-                <element signature="e#15125#15155#0" />
-                <element signature="e#15798#17608#0" />
-                <element signature="e#17795#17957#0" />
+                <element signature="e#7#22#0" expanded="true" />
+                <element signature="e#8685#8795#0" />
+                <element signature="e#7898#7933#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/GUI/Ui_SerialPort.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="256">
+              <caret line="182" column="29" lean-forward="true" selection-start-line="182" selection-start-column="29" selection-end-line="182" selection-end-column="29" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/uart.py">
-          <provider selected="true" editor-type-id="text-editor" />
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="36">
+              <caret line="2" column="33" lean-forward="true" selection-start-line="2" selection-start-column="33" selection-end-line="2" selection-end-column="33" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/.PyCharmCE2018.3/system/python_stubs/1744681996/PyQt5/QtSerialPort.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="234">
+              <caret line="14" column="6" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/.PyCharmCE2018.3/system/python_stubs/1744681996/PyQt5/QtCore/QIODevice.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="338">
+              <caret line="242" column="15" selection-start-line="242" selection-start-column="15" selection-end-line="242" selection-end-column="15" />
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.pyw">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="558">
-              <caret line="35" selection-start-line="35" selection-end-line="35" />
+            <state relative-caret-position="224">
+              <caret line="27" column="15" selection-start-line="27" selection-start-column="15" selection-end-line="27" selection-end-column="15" />
+              <folding>
+                <element signature="e#23#78#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -105,7 +117,7 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="FIRST">
-              <first_editor relative-caret-position="522">
+              <first_editor relative-caret-position="792">
                 <caret line="44" column="43" selection-start-line="44" selection-start-column="43" selection-end-line="44" selection-end-column="43" />
               </first_editor>
               <second_editor />
@@ -127,16 +139,18 @@
       <find>Parity</find>
       <find>PyQt5</find>
       <find>l</find>
+      <find>self.com.</find>
     </findStrings>
     <replaceStrings>
       <replace>PySide2</replace>
+      <replace>self.uart.com.</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="pyside2" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
   </component>
@@ -160,6 +174,8 @@
         <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/Smartcar_SerialPort.py" />
+        <option value="$PROJECT_DIR$/main.pyw" />
+        <option value="$PROJECT_DIR$/src/Smartcar_SerialPort.py" />
         <option value="$PROJECT_DIR$/src/uart.py" />
       </list>
     </option>
@@ -176,7 +192,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -193,6 +208,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -209,13 +225,14 @@
     <property name="settings.editor.selected.configurable" value="preferences.externalTools" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/res" />
-      <recent name="$PROJECT_DIR$/GUI" />
-      <recent name="$PROJECT_DIR$" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/res" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="F:\NXP\2018NXP\2侯宇轩工具\PyQt5-SerialPort-smartcar\src" />
+      <recent name="$PROJECT_DIR$/res" />
+      <recent name="$PROJECT_DIR$/GUI" />
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
@@ -280,6 +297,9 @@
       <module name="PyQt5-SerialPort-smartcar" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="F:\Program Files\Python\Python36\python.exe" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
@@ -316,16 +336,16 @@
     </configuration>
     <list>
       <item itemvalue="Python.Smartcar_SerialPort" />
-      <item itemvalue="Python.main" />
       <item itemvalue="Python.main.pyw" />
+      <item itemvalue="Python.main" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.main.pyw" />
+        <item itemvalue="Python.Smartcar_SerialPort" />
+        <item itemvalue="Python.main.pyw" />
         <item itemvalue="Python.main" />
         <item itemvalue="Python.Smartcar_SerialPort" />
-        <item itemvalue="Python.Smartcar_SerialPort" />
-        <item itemvalue="Python.main" />
       </list>
     </recent_temporary>
   </component>
@@ -418,7 +438,21 @@
       <option name="project" value="LOCAL" />
       <updated>1554519530730</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="准备大改">
+      <created>1554647403044</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1554647403045</updated>
+    </task>
+    <task id="LOCAL-00009" summary="开始大改">
+      <created>1554648455415</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1554648455415</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -437,7 +471,7 @@
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21003963" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21003963" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info id="Designer" order="3" />
@@ -454,9 +488,9 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.3286119" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50053364" side_tool="true" weight="0.32838982" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5006605" side_tool="true" weight="0.2549575" />
       <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.4994664" weight="0.32771337" />
-      <window_info anchor="bottom" id="Python Console" order="12" weight="0.25529662" />
+      <window_info active="true" anchor="bottom" id="Python Console" order="12" sideWeight="0.4993395" visible="true" weight="0.2549575" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -517,7 +551,9 @@
     <MESSAGE value="改了ui，测试完成" />
     <MESSAGE value="main.py加入 #!" />
     <MESSAGE value="改成main.pyw，改readme" />
-    <option name="LAST_COMMIT_MESSAGE" value="改成main.pyw，改readme" />
+    <MESSAGE value="准备大改" />
+    <MESSAGE value="开始大改" />
+    <option name="LAST_COMMIT_MESSAGE" value="开始大改" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file:///usr/lib/python3.7/site-packages/PyQt5/QtSerialPort.pyi" />
@@ -587,13 +623,6 @@
     <entry file="file://$PROJECT_DIR$/output/1.jpg">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/GUI/Ui_SerialPort.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="23" selection-start-column="23" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/setting.py" />
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor">
@@ -641,8 +670,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/parameter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="34" column="20" selection-start-line="34" selection-start-column="20" selection-end-line="34" selection-end-column="20" />
+        <state relative-caret-position="414">
+          <caret line="23" column="18" selection-start-line="23" selection-start-column="18" selection-end-line="23" selection-end-column="18" />
         </state>
       </provider>
     </entry>
@@ -654,7 +683,7 @@
       </provider>
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="FIRST">
-          <first_editor relative-caret-position="522">
+          <first_editor relative-caret-position="792">
             <caret line="44" column="43" selection-start-line="44" selection-start-column="43" selection-end-line="44" selection-end-column="43" />
           </first_editor>
           <second_editor />
@@ -663,42 +692,57 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.pyw">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="558">
-          <caret line="35" selection-start-line="35" selection-end-line="35" />
+        <state relative-caret-position="224">
+          <caret line="27" column="15" selection-start-line="27" selection-start-column="15" selection-end-line="27" selection-end-column="15" />
+          <folding>
+            <element signature="e#23#78#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharmCE2018.3/system/python_stubs/1744681996/PyQt5/QtCore/QIODevice.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="338">
+          <caret line="242" column="15" selection-start-line="242" selection-start-column="15" selection-end-line="242" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharmCE2018.3/system/python_stubs/1744681996/binascii.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="158">
+          <caret line="99" column="6" selection-start-line="99" selection-start-column="6" selection-end-line="99" selection-end-column="6" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/uart.py">
-      <provider selected="true" editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="36">
+          <caret line="2" column="33" lean-forward="true" selection-start-line="2" selection-start-column="33" selection-end-line="2" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharmCE2018.3/system/python_stubs/1744681996/PyQt5/QtSerialPort.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="14" column="6" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GUI/Ui_SerialPort.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="256">
+          <caret line="182" column="29" lean-forward="true" selection-start-line="182" selection-start-column="29" selection-end-line="182" selection-end-column="29" />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Smartcar_SerialPort.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-384">
-          <caret line="229" column="25" selection-start-line="229" selection-start-column="25" selection-end-line="229" selection-end-column="25" />
+        <state relative-caret-position="342">
+          <caret line="159" lean-forward="true" selection-start-line="159" selection-end-line="159" />
           <folding>
-            <element signature="e#8#17#0" expanded="true" />
-            <element signature="e#806#1064#0" />
-            <element signature="e#1124#1290#0" />
-            <element signature="e#1333#2354#0" />
-            <element signature="e#3987#5047#0" />
-            <element signature="e#5464#6423#0" />
-            <element signature="e#6478#6833#0" />
-            <element signature="e#6894#7570#0" />
-            <element signature="e#9685#10675#0" />
-            <element signature="e#10727#11031#0" />
-            <element signature="e#11091#11214#0" />
-            <element signature="e#11274#11339#0" />
-            <element signature="e#11397#11417#0" />
-            <element signature="e#11481#13109#0" />
-            <element signature="e#13159#13510#0" />
-            <element signature="e#13549#13649#0" />
-            <element signature="e#13655#13690#0" />
-            <element signature="e#13902#14179#0" />
-            <element signature="e#14213#14425#0" />
-            <element signature="e#14492#15119#0" />
-            <element signature="e#15125#15155#0" />
-            <element signature="e#15798#17608#0" />
-            <element signature="e#17795#17957#0" />
+            <element signature="e#7#22#0" expanded="true" />
+            <element signature="e#8685#8795#0" />
+            <element signature="e#7898#7933#0" />
           </folding>
         </state>
       </provider>

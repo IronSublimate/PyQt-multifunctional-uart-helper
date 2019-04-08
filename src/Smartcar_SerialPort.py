@@ -1,5 +1,5 @@
 # 逻辑文件
-
+import binascii
 import re
 import sys
 import json
@@ -12,6 +12,7 @@ from PyQt5.QtSerialPort import QSerialPort, QSerialPortInfo
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QListWidgetItem, QMessageBox, QGraphicsScene
 from PyQt5.QtGui import QImage, QPixmap, QPainter, QBitmap, QTextCursor
 from PyQt5 import QtGui
+
 # from PyQt5.QtWebEngineWidgets import *
 from GUI.Ui_SerialPort import Ui_MainWindow
 from PyQt5.QtCore import QDate
@@ -19,6 +20,7 @@ from GUI.ParaItem import Widget_ParaItem
 
 import parameter
 from src.uart import Uart
+
 
 # import bitarray
 # from OpenCV import OpenCVUse
@@ -34,7 +36,31 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.read_setting_json()
         # 设置实例
         # self.isOpenUART=False
-        self.create_items()
+        # self.create_items()
+        self.uart = Uart()
+        self.label_img.label_position = self.label_position  # 为了在label_img能改label_pasition
+        self.label_img.label_pause = self.label_pause  # 为了在label_img能改label_pause
+        # Qt 定时器类
+        self.timer = QTimer(self)  # 初始化一个定时器
+        self.timer.timeout.connect(self.show_time)  # 计时结束调用operate()方法
+        self.timer.start(100)  # 设置计时间隔 100ms 并启动
+        # Qt ListWidget 类
+        self.paraWidgets = []
+        self.cb_index = 0
+        # self.imgbyte=bitarray.bitarray(endian='big')
+        for i, para in enumerate(parameter.parameterList):
+            para_widget = Widget_ParaItem(
+                para, i, self.uart.com, self.listWidget_para)
+            # self.listWidget_para.addItem()
+            self.paraWidgets.append(para_widget)
+            para_listWidgetItem = QListWidgetItem(self.listWidget_para)
+            self.listWidget_para.addItem(para_listWidgetItem)
+            self.listWidget_para.setItemWidget(
+                para_listWidgetItem, para_widget)
+            size = para_widget.minimumSizeHint()
+            para_listWidgetItem.setSizeHint(size)
+            # para_widget.show()
+        # self.listWidget_para.show()
         # 设置信号与槽
         self.create_signal_slot()
 
@@ -71,30 +97,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             f.close()
 
     # 设置实例
-    def create_items(self):
-        self.uart=Uart()
-        # Qt 定时器类
-        self.timer = QTimer(self)  # 初始化一个定时器
-        self.timer.timeout.connect(self.show_time)  # 计时结束调用operate()方法
-        self.timer.start(100)  # 设置计时间隔 100ms 并启动
-        # Qt ListWidget 类
-        self.paraWidgets = []
-        self.imgrxData = bytearray()
-        self.pararxData = bytearray()
-        # self.imgbyte=bitarray.bitarray(endian='big')
-        for i, para in enumerate(parameter.parameterList):
-            para_widget = Widget_ParaItem(
-                para, i, self.com, self.listWidget_para)
-            # self.listWidget_para.addItem()
-            self.paraWidgets.append(para_widget)
-            para_listWidgetItem = QListWidgetItem(self.listWidget_para)
-            self.listWidget_para.addItem(para_listWidgetItem)
-            self.listWidget_para.setItemWidget(
-                para_listWidgetItem, para_widget)
-            size = para_widget.minimumSizeHint()
-            para_listWidgetItem.setSizeHint(size)
-            # para_widget.show()
-        # self.listWidget_para.show()
+    # def create_items(self):
+    #     pass
 
     # 设置信号与槽
     def create_signal_slot(self):
@@ -103,8 +107,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.Send_Button.clicked.connect(self.send_button_clicked)
         self.Com_Refresh_Button.clicked.connect(
             self.com_refresh_button_clicked)
-        self.com.readyRead.connect(self.com_receive_data)  # 接收数据
-        # self.com.connectNotify.connect(lambda x: print("New connect"))
+        self.uart.com.readyRead.connect(self.com_receive_data)  # 接收数据
+        # self.uart.com.connectNotify.connect(lambda x: print("New connect"))
         self.hexSending_checkBox.stateChanged.connect(self.hex_showing_clicked)
         self.hexSending_checkBox.stateChanged.connect(self.hex_sending_clicked)
         # self.About_Button.clicked.connect(self.Goto_GitHub)
@@ -137,47 +141,53 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
     # 16进制显示按下
     def hex_showing_clicked(self):
-        if self.hexShowing_checkBox.isChecked() == True:
+        if self.hexShowing_checkBox.isChecked():
             # 接收区换行
             self.textEdit_Recive.insertPlainText('\n')
 
     # 16进制发送按下
     def hex_sending_clicked(self):
-        if self.hexSending_checkBox.isChecked() == True:
+        if self.hexSending_checkBox.isChecked():
             pass
 
     # 发送按钮按下
     def send_button_clicked(self):
-        self.com_send_data()
+        try:
+            self.uart.com_send_data(self.textEdit_Send.toPlainText(), self.hexSending_checkBox.isChecked(),
+                                    self.comboBox_codetype.currentText())
+        except binascii.Error:
+            QMessageBox.critical(self, '错误', '转换编码错误')
+
+            # QMessageBox.critical(self, '异常', '十六进制发送错误')
 
     # 串口打开按钮按下
     def com_open_button_clicked(self):
         # 图像模式
         try:
-            self.imgHeight = int(self.lineEdit_height.text())
-            self.imgWidth = int(self.lineEdit_width.text())
-            self.label_img.set_img_height_width(self.imgHeight, self.imgWidth)
+            self.uart.imgHeight = int(self.lineEdit_height.text())
+            self.uart.imgWidth = int(self.lineEdit_width.text())
+            self.label_img.set_img_height_width(self.uart.imgHeight, self.uart.imgWidth)
 
         except ValueError:
             QMessageBox.warning(self, '错误', '图像长宽请输入整数')
             return
         self.cb_index = self.comboBox_imgType.currentIndex()
         if self.cb_index == 0:  # 二值化图像
-            self.totalImgSize = self.imgHeight * self.imgWidth // 8
+            self.uart.totalImgSize = self.uart.imgHeight * self.uart.imgWidth // 8
         elif self.cb_index == 1:  # 灰度图像
-            self.totalImgSize = self.imgHeight * self.imgWidth
+            self.uart.totalImgSize = self.uart.imgHeight * self.uart.imgWidth
 
-        #### com Open Code here ####
-        comName = self.Com_Name_Combo.currentText()
-        comBaud = int(self.Com_Baud_Combo.currentText())
-        self.com.setPortName(comName)
-        self.com.setBaudRate(comBaud)
-        self.com.setParity(self.comParity[self.comboBox_parity.currentIndex()])
-        self.com.setDataBits(int(self.comboBox_data.currentText()))
-        self.com.setStopBits(int(self.comboBox_stop.currentText()))
+        # com Open Code here #
+        com_name = self.Com_Name_Combo.currentText()
+        com_baud = int(self.Com_Baud_Combo.currentText())
+        self.uart.com.setPortName(com_name)
+        self.uart.com.setBaudRate(com_baud)
+        self.uart.com.setParity(self.uart.comParity[self.comboBox_parity.currentIndex()])
+        self.uart.com.setDataBits(int(self.comboBox_data.currentText()))
+        self.uart.com.setStopBits(int(self.comboBox_stop.currentText()))
 
         try:
-            if self.com.open(QSerialPort.ReadWrite) == False:
+            if not self.uart.com.open(QSerialPort.ReadWrite):
                 QMessageBox.critical(self, '严重错误', '串口打开失败')
                 return
         except:
@@ -194,7 +204,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.set_widgets_enabled(False)
 
     def com_close_button_clicked(self):
-        self.com.close()
+        self.uart.com.close()
         # self.Com_Close_Button.setEnabled(False)
         # self.Com_Open_Button.setEnabled(True)
         # self.Com_Refresh_Button.setEnabled(True)
@@ -204,9 +214,24 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.set_widgets_enabled(True)
         self.Com_isOpenOrNot_Label.setText('  已关闭')
 
+    def com_receive_data(self):
+        tab_widget_current_index = self.tabWidget.currentIndex()
+        if tab_widget_current_index == 0:  # 收发模式
+            try:
+                self.uart.com_receive_normal(self.hexShowing_checkBox.isChecked(),
+                                             self.comboBox_codetype.currentText())
+            except:
+                QMessageBox.critical(self, '严重错误', '串口接收数据错误')
+        elif tab_widget_current_index == 1:  # 图像模式
+            self.uart.com_receive_image()
+        elif tab_widget_current_index == 2:  # 调参模式 且 已发送 hyxr
+            self.uart.com_receive_para()
+        else:
+            pass
+
     def send_read_mcu(self):
-        if self.com.isOpen():
-            self.com.write(b'hyxr')
+        if self.uart.com.isOpen():
+            self.uart.com.write(b'hyxr')
             self.ready_to_get_paras = True
 
     # def on_open_cv_use_clicked(self):
