@@ -6,12 +6,12 @@ import json
 # sys.path.append("GUI")
 
 import time
-from PyQt5.QtCore import QTimer, Qt, QUrl
+from PyQt5.QtCore import QTimer, Qt, QUrl, QCoreApplication
 # from PyQt5.QtWidgets import *
 from PyQt5.QtSerialPort import QSerialPort, QSerialPortInfo
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QListWidgetItem, QMessageBox, QGraphicsScene
-from PyQt5.QtGui import QImage, QPixmap, QPainter, QBitmap, QTextCursor
-from PyQt5 import QtGui
+from PyQt5.QtWidgets import QMainWindow, QWidget, QListWidgetItem, QMessageBox, QGraphicsScene
+from PyQt5.QtGui import QImage, QPixmap, QPainter, QBitmap, QTextCursor, QGuiApplication
+from PyQt5.Qt import QApplication
 
 # from PyQt5.QtWebEngineWidgets import *
 from GUI.Ui_SerialPort import Ui_MainWindow
@@ -118,13 +118,19 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.pushButton_saveImg.clicked.connect(self.save_img)
         # self.textEdit_Recive.textChanged.connect(self.textEdit_Recive.moveCursor(QTextCursor.End))
 
-    # 跳转到 GitHub 查看源代码
-    # def Goto_GitHub(self):
-    #     self.browser = QWebEngineView()
-    #     self.browser.load(QUrl('https://github.com/Oslomayor/PyQt5-SerialPort-Stable'))
-    #     self.setCentralWidget(self.browser)
+        # Action
+        self.action_uart.changed.connect(lambda: self.dockWidget_uart.setHidden(not self.action_uart.isChecked()))
+        self.dockWidget_uart.visibilityChanged.connect(lambda b: self.action_uart.setChecked(b))
+        self.action_exit.triggered.connect(lambda: QApplication.exit())
+        self.actionAbout_Qt.triggered.connect(lambda :QMessageBox.aboutQt(self,"About Qt"))
+        # 跳转到 GitHub 查看源代码
+        # def Goto_GitHub(self):
+        #     self.browser = QWebEngineView()
+        #     self.browser.load(QUrl('https://github.com/Oslomayor/PyQt5-SerialPort-Stable'))
+        #     self.setCentralWidget(self.browser)
 
-    # 显示时间
+        # 显示时间
+
     def show_time(self):
         self.Time_Label.setText(time.strftime(
             "%B %d, %H:%M:%S", time.localtime()))
@@ -226,17 +232,18 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             ret = self.uart.com_receive_image(self.cb_index, self.label_img.extra_bytes_len)
             if ret is not None:
                 img, extra_bytes = ret
-                self.label_img.extra_data=extra_bytes
+                self.label_img.extra_data = extra_bytes
                 self.label_img.setPixmap(img)
         # elif tab_widget_current_index == 2:  # 调参模式 且 已发送 hyxr
         #     self.uart.com_receive_para()
         else:
-            self.uart.com_receive_standard() # 标准模式读取
+            self.uart.com_receive_standard()  # 标准模式读取
 
-    # def send_read_mcu(self):
-    #     if self.uart.com.isOpen():
-    #         self.uart.com.write(b'hyxr')
-    #         self.ready_to_get_paras = True
+    def send_read_mcu(self):
+        pass
+        # if self.uart.com.isOpen():
+        #     self.uart.com.write(b'hyxr')
+        #     self.ready_to_get_paras = True
 
     # def on_open_cv_use_clicked(self):
     #     if self.checkBox_UseOpenCV.isChecked():
@@ -295,6 +302,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     #     painter = QPainter(self.label_img)
     #     painter.drawPixmap(0, 0, self.label_img.width(),
     #                        self.label_img.height(), QPixmap.fromImage(self.img))
+    # def on_action_uart_change(self):
 
     def test(self):
         self.tabWidget.setCurrentIndex(1)

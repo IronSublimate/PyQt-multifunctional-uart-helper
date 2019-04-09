@@ -116,7 +116,7 @@ class Uart:
     def com_receive_standard(self):
         rx_data = self.com.readAll()
         self.standard_rx_data += rx_data
-        if b'\x01' in rx_data:
+        if b'\x00' in rx_data:
             self.process_standard_rx_data()
             self.standard_rx_data.clear()
 
@@ -144,9 +144,10 @@ class Uart:
         #         self.pararxData.clear()
 
     def process_standard_rx_data(self):
-        self.standard_rx_data.resize(self.standard_rx_data.indexOf(b'\x01'))
+        self.standard_rx_data.resize(self.standard_rx_data.indexOf(b'\x00'))
         list_of_msg = self.standard_rx_data[1:].split('\n')  # 字符串列表
         msg = self.standard_rx_data[0]
+        dic = None
         if msg == b'\xa0':  # 看参数模式
             dic = self.watch_paras
         elif msg == b'\xa8':  # 波形模式
@@ -156,5 +157,6 @@ class Uart:
         elif msg == b'\xb0':  # 改参数模式，成功修改参数
             pass
         for entry in list_of_msg:
-            key, value = bytes(entry).split(b':', 1)
-            dic[key.decode()] = value.decode()
+            if entry != b'':
+                key, value = bytes(entry).split(b':', 1)
+                dic[key.decode()] = value.decode()
