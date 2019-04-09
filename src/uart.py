@@ -17,13 +17,18 @@ class Uart:
         self.img = QPixmap()
         self.imgHeight = 80
         self.imgWidth = 60
-        self.imgrxData = QByteArray()
+        self.img_rx_data = QByteArray()
         self.totalImgSize = self.imgHeight * self.imgWidth
         # 上位机改参数类
         self.ready_to_get_paras = False
 
-        self.imgrxData = bytearray()
-        self.pararxData = bytearray()
+        # self.imgrxData = bytearray()
+        # self.pararxData = bytearray()
+        # 标准模式类
+        self.standard_rx_data = QByteArray()
+        self.change_paras = dict()  # 上位机改参数字典
+        self.watch_paras = dict()  # 上位机看参数
+        self.wave_paras = dict()  # 波形字典
         # 串口发送数据
 
     def com_send_data(self, tx_data: str, is_hex: bool, codetype: str):
@@ -68,43 +73,52 @@ class Uart:
             return hex_str
 
     # 串口图像模式处理函数
-    def com_receive_image(self):
-        if len(self.imgrxData) == 0:
-            self.imgrxData = self.com.readAll()
+    def com_receive_image(self, cb_index, extra_bytes_len) -> (QBitmap, tuple):
+        if len(self.img_rx_data) == 0:
+            self.img_rx_data = self.com.readAll()
             # print(type(self.imgrxData))
-            if self.imgrxData[:2] != b'\x01\xfe':  # 不是图像的起始位
-                self.imgrxData.clear()
-                return
+            if self.img_rx_data[:2] != b'\x01\xfe':  # 不是图像的起始位
+                self.img_rx_data.clear()
+                return None
             else:
                 # self.imgrxData=self.imgrxData[2:]
-                return
+                return None
         else:
-            self.imgrxData += self.com.readAll()
+            self.img_rx_data += self.com.readAll()
         # if self.imgrxData[:2]==b'\x01\xfe' and self.imgrxData[-2:]==b'\xfe\x01':
-        if len(self.imgrxData) >= self.totalImgSize + 2 + self.label_img.extra_bytes_len:  # 校验位两位，其余14位为传的数据
+        if len(self.img_rx_data) >= self.totalImgSize + 2 + extra_bytes_len:  # 校验位两位，其余14位为传的数据
             self.com.clear()
             # cb_index = self.comboBox_imgType.currentIndex()
-            self.label_img.extra_data = tuple(
-                bytes(self.imgrxData[2:2 + self.label_img.extra_bytes_len]))  # 14位额外数据
+            extra_data = tuple(
+                bytes(self.img_rx_data[2:2 + extra_bytes_len]))  # 14位额外数据
             # print(type( self.label_img.extra_data[0]))
             # print(self.label_img.extra_data)
-            if self.cb_index == 0:  # 二值化图像
+            if cb_index == 0:  # 二值化图像
                 self.img = QBitmap.fromData(QSize(self.imgWidth, self.imgHeight),
-                                            bytes(self.imgrxData[2 + self.label_img.extra_bytes_len:]),
+                                            bytes(self.img_rx_data[2 + extra_bytes_len:]),
                                             QImage.Format_Mono)
-            elif self.cb_index == 1:  # 灰度图像
+            elif cb_index == 1:  # 灰度图像
                 # imgbytes = bytes(self.imgrxData[2:])
                 # self.img = QImage(imgbytes, self.imgWidth,self.imgHeight, QImage.Format_Mono)
                 imgbytes = bytes([255 if int.from_bytes(b, 'little') > 0 else 0 for b in
-                                  self.imgrxData[2 + self.label_img.extra_bytes_len:]])
+                                  self.img_rx_data[2 + extra_bytes_len:]])
                 self.img = QBitmap.fromImage(
                     QImage(imgbytes, self.imgWidth, self.imgHeight, QImage.Format_Grayscale8))
                 # import numpy as np
                 # a=np.frombuffer(bytes(self.imgrxData[2:]),dtype=np.uint8)*128
                 # imgbytes=bytes(a)
             # OpenCVUse.process(imgbytes, self.imgHeight, self.imgWidth)
-            self.label_img.setPixmap(self.img)
-            self.imgrxData.clear()
+            # self.label_img.setPixmap(self.img)
+            self.img_rx_data.clear()
+            return self.img, extra_data
+
+    # 串口其他模式处理函数
+    def com_receive_standard(self):
+        rx_data = self.com.readAll()
+        self.standard_rx_data += rx_data
+        if b'\x01' in rx_data:
+            self.process_standard_rx_data()
+            self.standard_rx_data.clear()
 
     # 串口调参模式处理函数 且 已发送 hyxr
     def com_receive_para(self):
@@ -129,8 +143,18 @@ class Uart:
         #         self.ready_to_get_paras = False
         #         self.pararxData.clear()
 
-        # 串口刷新
-
-    # 串口综合模式（改参数、波形、弹琴等）
-    def com_receive_other(self):
-        pass
+    def process_standard_rx_data(self):
+        self.standard_rx_data.resize(self.standard_rx_data.indexOf(b'\x01'))
+        list_of_msg = self.standard_rx_data[1:].split('\n')  # 字符串列表
+        msg = self.standard_rx_data[0]
+        if msg == b'\xa0':  # 看参数模式
+            dic = self.watch_paras
+        elif msg == b'\xa8':  # 波形模式
+            dic = self.wave_paras
+        elif msg == b'\xb2':  # 改参数模式，读取参数
+            dic = self.change_paras
+        elif msg == b'\xb0':  # 改参数模式，成功修改参数
+            pass
+        for entry in list_of_msg:
+            key, value = bytes(entry).split(b':', 1)
+            dic[key.decode()] = value.decode()

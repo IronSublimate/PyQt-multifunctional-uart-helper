@@ -223,16 +223,20 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             except:
                 QMessageBox.critical(self, '严重错误', '串口接收数据错误')
         elif tab_widget_current_index == 1:  # 图像模式
-            self.uart.com_receive_image()
-        elif tab_widget_current_index == 2:  # 调参模式 且 已发送 hyxr
-            self.uart.com_receive_para()
+            ret = self.uart.com_receive_image(self.cb_index, self.label_img.extra_bytes_len)
+            if ret is not None:
+                img, extra_bytes = ret
+                self.label_img.extra_data=extra_bytes
+                self.label_img.setPixmap(img)
+        # elif tab_widget_current_index == 2:  # 调参模式 且 已发送 hyxr
+        #     self.uart.com_receive_para()
         else:
-            pass
+            self.uart.com_receive_standard() # 标准模式读取
 
-    def send_read_mcu(self):
-        if self.uart.com.isOpen():
-            self.uart.com.write(b'hyxr')
-            self.ready_to_get_paras = True
+    # def send_read_mcu(self):
+    #     if self.uart.com.isOpen():
+    #         self.uart.com.write(b'hyxr')
+    #         self.ready_to_get_paras = True
 
     # def on_open_cv_use_clicked(self):
     #     if self.checkBox_UseOpenCV.isChecked():
