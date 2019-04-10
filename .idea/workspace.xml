@@ -319,6 +319,9 @@
       <module name="PyQt5-SerialPort-smartcar" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -336,8 +339,8 @@
     </configuration>
     <list>
       <item itemvalue="Python.Smartcar_SerialPort" />
-      <item itemvalue="Python.main.pyw" />
       <item itemvalue="Python.main" />
+      <item itemvalue="Python.main.pyw" />
     </list>
     <recent_temporary>
       <list>
