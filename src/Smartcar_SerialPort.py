@@ -9,7 +9,7 @@ import time
 from PyQt5.QtCore import QTimer, Qt, QUrl, QCoreApplication
 # from PyQt5.QtWidgets import *
 from PyQt5.QtSerialPort import QSerialPort, QSerialPortInfo
-from PyQt5.QtWidgets import QMainWindow, QWidget, QListWidgetItem, QMessageBox, QGraphicsScene
+from PyQt5.QtWidgets import QMainWindow, QWidget, QListWidgetItem, QMessageBox, QGraphicsScene, QTableWidgetItem
 from PyQt5.QtGui import QImage, QPixmap, QPainter, QBitmap, QTextCursor, QGuiApplication
 from PyQt5.Qt import QApplication
 
@@ -34,10 +34,11 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.read_para_json()
         self.read_setting_json()
+        self.tableWidget_para.setHorizontalHeaderLabels(("参数名", "参数值"))
         # 设置实例
         # self.isOpenUART=False
         # self.create_items()
-        self.uart = Uart()
+        self.uart = Uart(self)
         self.label_img.label_position = self.label_position  # 为了在label_img能改label_pasition
         self.label_img.label_pause = self.label_pause  # 为了在label_img能改label_pause
         # Qt 定时器类
@@ -48,17 +49,17 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.paraWidgets = []
         self.cb_index = 0
         # self.imgbyte=bitarray.bitarray(endian='big')
-        for i, para in enumerate(parameter.parameterList):
-            para_widget = Widget_ParaItem(
-                para, i, self.uart.com, self.listWidget_para)
-            # self.listWidget_para.addItem()
-            self.paraWidgets.append(para_widget)
-            para_listWidgetItem = QListWidgetItem(self.listWidget_para)
-            self.listWidget_para.addItem(para_listWidgetItem)
-            self.listWidget_para.setItemWidget(
-                para_listWidgetItem, para_widget)
-            size = para_widget.minimumSizeHint()
-            para_listWidgetItem.setSizeHint(size)
+        # for i, para in enumerate(parameter.parameterList):
+            # para_widget = Widget_ParaItem(
+            #     para, str(i), self.uart.com, self.listWidget_para)
+            # # self.listWidget_para.addItem()
+            # self.paraWidgets.append(para_widget)
+            # para_listWidgetItem = QListWidgetItem(self.listWidget_para)
+            # self.listWidget_para.addItem(para_listWidgetItem)
+            # self.listWidget_para.setItemWidget(
+            #     para_listWidgetItem, para_widget)
+            # size = para_widget.minimumSizeHint()
+            # para_listWidgetItem.setSizeHint(size)
             # para_widget.show()
         # self.listWidget_para.show()
         # 设置信号与槽
@@ -117,12 +118,14 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.checkBox_showGrid.stateChanged.connect(self.on_show_grid_changed)
         self.pushButton_saveImg.clicked.connect(self.save_img)
         # self.textEdit_Recive.textChanged.connect(self.textEdit_Recive.moveCursor(QTextCursor.End))
+        self.uart.signal_update_standard_gui.connect(self.update_standard_gui)
+        self.tabWidget_other.currentChanged.connect(self.update_standard_gui)
 
         # Action
         self.action_uart.changed.connect(lambda: self.dockWidget_uart.setHidden(not self.action_uart.isChecked()))
         self.dockWidget_uart.visibilityChanged.connect(lambda b: self.action_uart.setChecked(b))
         self.action_exit.triggered.connect(lambda: QApplication.exit())
-        self.actionAbout_Qt.triggered.connect(lambda :QMessageBox.aboutQt(self,"About Qt"))
+        self.actionAbout_Qt.triggered.connect(lambda: QMessageBox.aboutQt(self, "About Qt"))
         # 跳转到 GitHub 查看源代码
         # def Goto_GitHub(self):
         #     self.browser = QWebEngineView()
@@ -224,8 +227,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         tab_widget_current_index = self.tabWidget.currentIndex()
         if tab_widget_current_index == 0:  # 收发模式
             try:
-                self.uart.com_receive_normal(self.hexShowing_checkBox.isChecked(),
-                                             self.comboBox_codetype.currentText())
+                msg = self.uart.com_receive_normal(self.hexShowing_checkBox.isChecked(),
+                                                   self.comboBox_codetype.currentText())
+                self.textEdit_Recive.insertPlainText(msg)
             except:
                 QMessageBox.critical(self, '严重错误', '串口接收数据错误')
         elif tab_widget_current_index == 1:  # 图像模式
@@ -284,6 +288,42 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.comboBox_stop.setEnabled(enable)
         # self.checkBox_UseOpenCV.setEnabled(enable)
         # self.checkBox_showGrid.setEnabled(enable)
+
+    def update_standard_gui(self, index):
+        if index == self.tabWidget_other.currentIndex():  # 标准（其他）模式下的tabwigdget
+            if index == 0:  # 读参数模式
+                self.tableWidget_para.setRowCount(len(self.uart.watch_paras)+len(self.uart.wave_paras))
+                for i, key in enumerate(self.uart.watch_paras):
+                    name = QTableWidgetItem(key)
+                    value = QTableWidgetItem(self.uart.watch_paras[key])
+                    self.tableWidget_para.setItem(i, 0, name)
+                    self.tableWidget_para.setItem(i, 1, value)
+                for i, key in enumerate(self.uart.wave_paras):
+                    name = QTableWidgetItem(key)
+                    value = QTableWidgetItem(self.uart.wave_paras[key])
+                    self.tableWidget_para.setItem(i, 0, name)
+                    self.tableWidget_para.setItem(i, 1, value)
+            elif index == 1:  # 改参数模式
+                # item.paras.value = value
+                for key in self.uart.change_paras:
+                    index_2 = int(key)
+                    if index_2 >= len(self.paraWidgets):
+                        para_widget = Widget_ParaItem(
+                            parameter.Parameter('Unkown','0'), key, self.uart.com, self.listWidget_para)
+                        # self.listWidget_para.addItem()
+                        self.paraWidgets.append(para_widget)
+                        para_listWidgetItem = QListWidgetItem(self.listWidget_para)
+                        self.listWidget_para.addItem(para_listWidgetItem)
+                        self.listWidget_para.setItemWidget(
+                            para_listWidgetItem, para_widget)
+                        size = para_widget.minimumSizeHint()
+                        para_listWidgetItem.setSizeHint(size)
+                    self.paraWidgets[index_2].index = key
+                    self.paraWidgets[index_2].para_value.setText(self.uart.change_paras[key])
+                    self.paraWidgets[index_2].paras.value = self.uart.change_paras[key]
+
+            elif index == 2:  # 波形模式
+                pass
 
     # def clear_read_buffer(self):
     #     pass

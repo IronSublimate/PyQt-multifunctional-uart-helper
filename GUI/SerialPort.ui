@@ -439,6 +439,23 @@ p, li { white-space: pre-wrap; }
            <attribute name="title">
             <string>查看参数</string>
            </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <item>
+             <widget class="QTableWidget" name="tableWidget_para">
+              <property name="showGrid">
+               <bool>true</bool>
+              </property>
+              <property name="rowCount">
+               <number>0</number>
+              </property>
+              <property name="columnCount">
+               <number>2</number>
+              </property>
+              <column/>
+              <column/>
+             </widget>
+            </item>
+           </layout>
           </widget>
           <widget class="QWidget" name="tab_change_parameter">
            <attribute name="title">

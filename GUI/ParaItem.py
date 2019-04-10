@@ -5,7 +5,7 @@ from PyQt5.QtSerialPort import QSerialPort
 
 
 class Widget_ParaItem(QWidget, Ui_PataList):
-    def __init__(self, paras: Parameter, _index: int, _com: QSerialPort, parent=None):
+    def __init__(self, paras: Parameter, _index: str, _com: QSerialPort, parent=None):
         super(Widget_ParaItem, self).__init__(parent)
         super(QWidget, self).__init__()
         # super(Ui_PataList).__init__()
@@ -23,15 +23,14 @@ class Widget_ParaItem(QWidget, Ui_PataList):
 
     def sendParasToMCU(self):
         if self.com.isOpen():
-            self.paras.value = int(self.para_value.text())
-            print(self.index)
-            txdata0 = b'hyxw'
-            txdataIndex = self.index.to_bytes(1, 'little', signed=False)
-            txdataValue = self.paras.value.to_bytes(
-                4, 'little', signed=self.paras.signed)
+            self.paras.value = self.para_value.text()
+            # print(self.index)
+            tx_data0 = b'\xb3'
+            tx_data_index = self.index
+            tx_data_value = self.paras.value
             try:
-                self.com.write(txdata0+txdataIndex+txdataValue)
-                print("sendParasToMCU")
+                self.com.write(tx_data0 + tx_data_index + b' ' + tx_data_value + b'\n')
+                # print("sendParasToMCU")
             except:
                 QMessageBox.critical(self, '异常', '参数发送错误')
         # else :

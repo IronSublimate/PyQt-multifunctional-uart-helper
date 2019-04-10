@@ -3,12 +3,15 @@ import re
 from PyQt5.QtSerialPort import QSerialPort, QSerialPortInfo
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtCore import QSize, QByteArray
+from PyQt5.QtCore import QSize, QByteArray, pyqtSignal, QObject,QAbstractTableModel
 from PyQt5.QtGui import QImage, QPixmap, QBitmap, QPainter
 
 
-class Uart:
-    def __init__(self):
+class Uart(QObject):
+    signal_update_standard_gui = pyqtSignal(int)
+
+    def __init__(self,parent=None):
+        super(Uart, self).__init__(parent)
         # Qt 串口类
         self.com = QSerialPort()
         self.comParity = (QSerialPort.NoParity, QSerialPort.EvenParity, QSerialPort.OddParity, QSerialPort.SpaceParity,
@@ -29,6 +32,7 @@ class Uart:
         self.change_paras = dict()  # 上位机改参数字典
         self.watch_paras = dict()  # 上位机看参数
         self.wave_paras = dict()  # 波形字典
+
         # 串口发送数据
 
     def com_send_data(self, tx_data: str, is_hex: bool, codetype: str):
@@ -115,10 +119,36 @@ class Uart:
     # 串口其他模式处理函数
     def com_receive_standard(self):
         rx_data = self.com.readAll()
+        # self.standard_rx_data += rx_data
+        index = rx_data.indexOf(b'\x00')
+        if index >= 0:  # 有'\x00'
+            rx_data.resize(index)
         self.standard_rx_data += rx_data
-        if b'\x00' in rx_data:
-            self.process_standard_rx_data()
+        if index >= 0:
+            # self.standard_rx_data.resize(self.standard_rx_data.indexOf(b'\x00'))
+            list_of_msg = self.standard_rx_data[1:].split('\n')  # 字符串列表
+            msg = self.standard_rx_data[0]
+
+            if msg == b'\xa0':  # 看参数模式
+                self.add_to_dict(self.watch_paras, list_of_msg)
+                self.signal_update_standard_gui.emit(0)
+            elif msg == b'\xa8':  # 波形模式
+                self.add_to_dict(self.wave_paras, list_of_msg)
+                self.signal_update_standard_gui.emit(2)
+            elif msg == b'\xb2':  # 改参数模式，读取参数
+                self.add_to_dict(self.change_paras, list_of_msg)
+                self.signal_update_standard_gui.emit(1)
+            elif msg == b'\xb0':  # 改参数模式，成功修改参数
+                pass
             self.standard_rx_data.clear()
+
+    # 将字符串添加到对应的字典中
+    @staticmethod
+    def add_to_dict(dic: dict, list_of_msg: list):
+        for entry in list_of_msg:
+            if entry != b'':
+                key, value = bytes(entry).split(b':', 1)
+                dic[key.decode(errors='ignored')] = value.decode(errors='ignored')
 
     # 串口调参模式处理函数 且 已发送 hyxr
     def com_receive_para(self):
@@ -143,20 +173,4 @@ class Uart:
         #         self.ready_to_get_paras = False
         #         self.pararxData.clear()
 
-    def process_standard_rx_data(self):
-        self.standard_rx_data.resize(self.standard_rx_data.indexOf(b'\x00'))
-        list_of_msg = self.standard_rx_data[1:].split('\n')  # 字符串列表
-        msg = self.standard_rx_data[0]
-        dic = None
-        if msg == b'\xa0':  # 看参数模式
-            dic = self.watch_paras
-        elif msg == b'\xa8':  # 波形模式
-            dic = self.wave_paras
-        elif msg == b'\xb2':  # 改参数模式，读取参数
-            dic = self.change_paras
-        elif msg == b'\xb0':  # 改参数模式，成功修改参数
-            pass
-        for entry in list_of_msg:
-            if entry != b'':
-                key, value = bytes(entry).split(b':', 1)
-                dic[key.decode()] = value.decode()
+    # def process_standard_rx_data(self):

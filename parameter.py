@@ -7,7 +7,7 @@ import json
 
 
 class Parameter:
-    def __init__(self, name: str, value=0, signed=True):
+    def __init__(self, name: str, value:str, signed=True):
         self.name = name
         self.value = value
         self.signed = signed
