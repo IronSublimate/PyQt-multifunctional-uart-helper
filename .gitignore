@@ -8,4 +8,5 @@ __pycache__
 dist.zip
 venv
 .idea
-.gitignore
+
+PyQt5-uart-helper.spec
