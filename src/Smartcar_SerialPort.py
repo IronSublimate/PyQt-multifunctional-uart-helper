@@ -32,7 +32,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super(MyMainWindow, self).__init__(parent)
         self.setupUi(self)
-        self.read_para_json()
+        # self.read_para_json()
         self.read_setting_json()
         self.tableWidget_para.setHorizontalHeaderLabels(("参数名", "参数值"))
         # 设置实例
@@ -46,31 +46,31 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.timer.timeout.connect(self.show_time)  # 计时结束调用operate()方法
         self.timer.start(100)  # 设置计时间隔 100ms 并启动
         # Qt ListWidget 类
-        self.paraWidgets = []
+        self.paraWidgets = dict()
         self.cb_index = 0
         # self.imgbyte=bitarray.bitarray(endian='big')
         # for i, para in enumerate(parameter.parameterList):
-            # para_widget = Widget_ParaItem(
-            #     para, str(i), self.uart.com, self.listWidget_para)
-            # # self.listWidget_para.addItem()
-            # self.paraWidgets.append(para_widget)
-            # para_listWidgetItem = QListWidgetItem(self.listWidget_para)
-            # self.listWidget_para.addItem(para_listWidgetItem)
-            # self.listWidget_para.setItemWidget(
-            #     para_listWidgetItem, para_widget)
-            # size = para_widget.minimumSizeHint()
-            # para_listWidgetItem.setSizeHint(size)
-            # para_widget.show()
+        # para_widget = Widget_ParaItem(
+        #     para, str(i), self.uart.com, self.listWidget_para)
+        # # self.listWidget_para.addItem()
+        # self.paraWidgets.append(para_widget)
+        # para_listWidgetItem = QListWidgetItem(self.listWidget_para)
+        # self.listWidget_para.addItem(para_listWidgetItem)
+        # self.listWidget_para.setItemWidget(
+        #     para_listWidgetItem, para_widget)
+        # size = para_widget.minimumSizeHint()
+        # para_listWidgetItem.setSizeHint(size)
+        # para_widget.show()
         # self.listWidget_para.show()
         # 设置信号与槽
         self.create_signal_slot()
 
-    def read_para_json(self):  # 解析parameter.json
-        try:
-            parameter.open_json()
-        except:
-            QMessageBox.warning(self, '警告', '未找到正确的parameter.json')
-            parameter.parameterList.clear()
+    # def read_para_json(self):  # 解析parameter.json
+    #     try:
+    #         parameter.open_json()
+    #     except:
+    #         QMessageBox.warning(self, '警告', '未找到正确的parameter.json')
+    #         parameter.parameterList.clear()
 
     def read_setting_json(self):
         try:
@@ -244,8 +244,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             self.uart.com_receive_standard()  # 标准模式读取
 
     def send_read_mcu(self):
-        pass
-        # if self.uart.com.isOpen():
+        if self.uart.com.isOpen():
+            start = b'\xb3'
+            self.uart.com.write(start)
         #     self.uart.com.write(b'hyxr')
         #     self.ready_to_get_paras = True
 
@@ -292,38 +293,78 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     def update_standard_gui(self, index):
         if index == self.tabWidget_other.currentIndex():  # 标准（其他）模式下的tabwigdget
             if index == 0:  # 读参数模式
-                self.tableWidget_para.setRowCount(len(self.uart.watch_paras)+len(self.uart.wave_paras))
-                for i, key in enumerate(self.uart.watch_paras):
-                    name = QTableWidgetItem(key)
-                    value = QTableWidgetItem(self.uart.watch_paras[key])
-                    self.tableWidget_para.setItem(i, 0, name)
-                    self.tableWidget_para.setItem(i, 1, value)
-                for i, key in enumerate(self.uart.wave_paras):
-                    name = QTableWidgetItem(key)
-                    value = QTableWidgetItem(self.uart.wave_paras[key])
-                    self.tableWidget_para.setItem(i, 0, name)
-                    self.tableWidget_para.setItem(i, 1, value)
+                # self.tableWidget_para.setRowCount(len(self.uart.watch_paras)+len(self.uart.wave_paras))
+                for key in self.uart.watch_paras:
+                    lis = self.tableWidget_para.findItems(key, Qt.MatchExactly)
+                    value = self.uart.watch_paras[key]
+                    if len(lis) > 0 and lis[0].column() == 0:  # 有该元素
+                        row = lis[0].row()
+                        self.tableWidget_para.item(row, 1).setText(value)
+                    else:  # 没有该元素
+                        length = self.tableWidget_para.rowCount()
+                        self.tableWidget_para.insertRow(length)
+                        self.tableWidget_para.setItem(length, 0, QTableWidgetItem(key))
+                        self.tableWidget_para.setItem(length, 1, QTableWidgetItem(value))
+
+                for key in self.uart.wave_paras:
+                    lis = self.tableWidget_para.findItems(key, Qt.MatchExactly)
+                    value = self.uart.wave_paras[key]
+                    if len(lis) > 0 and lis[0].column() == 0:  # 有该元素
+                        row = lis[0].row()
+                        self.tableWidget_para.item(row, 1).setText(value)
+                    else:  # 没有该元素
+                        length = self.tableWidget_para.rowCount()
+                        self.tableWidget_para.insertRow(length)
+                        self.tableWidget_para.setItem(length, 0, QTableWidgetItem(key))
+                        self.tableWidget_para.setItem(length, 1, QTableWidgetItem(value))
+
             elif index == 1:  # 改参数模式
                 # item.paras.value = value
+                error_keys=list()
                 for key in self.uart.change_paras:
-                    index_2 = int(key)
-                    if index_2 >= len(self.paraWidgets):
-                        para_widget = Widget_ParaItem(
-                            parameter.Parameter('Unkown','0'), key, self.uart.com, self.listWidget_para)
-                        # self.listWidget_para.addItem()
-                        self.paraWidgets.append(para_widget)
-                        para_listWidgetItem = QListWidgetItem(self.listWidget_para)
-                        self.listWidget_para.addItem(para_listWidgetItem)
-                        self.listWidget_para.setItemWidget(
-                            para_listWidgetItem, para_widget)
-                        size = para_widget.minimumSizeHint()
-                        para_listWidgetItem.setSizeHint(size)
-                    self.paraWidgets[index_2].index = key
-                    self.paraWidgets[index_2].para_value.setText(self.uart.change_paras[key])
-                    self.paraWidgets[index_2].paras.value = self.uart.change_paras[key]
-
+                    value_str = self.uart.change_paras[key]
+                    try:
+                        pos, va = value_str.split(',', 1)
+                    except:
+                        print('read change para error')
+                        error_keys.append(key)
+                        # self.uart.change_paras.pop(key)
+                        pass
+                    else:  # 正常解析
+                        if key in self.paraWidgets:
+                            self.paraWidgets[key].para_value.setText(va)
+                        else:
+                            para_widget = Widget_ParaItem(key, pos, va, self.uart)
+                            self.paraWidgets[key] = para_widget
+                            para_list_widget_item = QListWidgetItem(self.listWidget_para)
+                            self.listWidget_para.addItem(para_list_widget_item)
+                            self.listWidget_para.setItemWidget(
+                                para_list_widget_item, para_widget)
+                            size = para_widget.minimumSizeHint()
+                            para_list_widget_item.setSizeHint(size)
+                    # #
+                    # index_2 = int(key)
+                    # if index_2 >= len(self.paraWidgets):
+                    #
+                    #     # self.listWidget_para.addItem()
+                    #     self.paraWidgets.append(para_widget)
+                    #     para_listWidgetItem = QListWidgetItem(self.listWidget_para)
+                    #     self.listWidget_para.addItem(para_listWidgetItem)
+                    #     self.listWidget_para.setItemWidget(
+                    #         para_listWidgetItem, para_widget)
+                    #     size = para_widget.minimumSizeHint()
+                    #     para_listWidgetItem.setSizeHint(size)
+                    # self.paraWidgets[index_2].index = key
+                    # self.paraWidgets[index_2].para_value.setText(self.uart.change_paras[key])
+                    # self.paraWidgets[index_2].paras.value = self.uart.change_paras[key]
+                for k in error_keys:
+                    del self.uart.change_paras[k]
             elif index == 2:  # 波形模式
                 pass
+        elif index == -1: # 修改参数成功
+            ss = self.uart.standard_rx_data[1:].data().decode(errors='ignore')
+            self.uart.standard_rx_data.clear()
+            QMessageBox.information(self, '成功', '成功修改参数为：'+ss)
 
     # def clear_read_buffer(self):
     #     pass

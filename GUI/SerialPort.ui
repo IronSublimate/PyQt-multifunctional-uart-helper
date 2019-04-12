@@ -941,6 +941,9 @@ background-color: rgb(0, 0, 0);*/</string>
    <property name="text">
     <string>串口设置(&amp;U)</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+U</string>
+   </property>
   </action>
   <action name="action_exit">
    <property name="text">
@@ -955,7 +958,7 @@ background-color: rgb(0, 0, 0);*/</string>
   </action>
   <action name="actionAbout_Qt">
    <property name="text">
-    <string>About Qt</string>
+    <string>About &amp;Qt</string>
    </property>
   </action>
  </widget>

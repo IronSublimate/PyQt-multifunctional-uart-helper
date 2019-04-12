@@ -3,14 +3,14 @@ import re
 from PyQt5.QtSerialPort import QSerialPort, QSerialPortInfo
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtCore import QSize, QByteArray, pyqtSignal, QObject,QAbstractTableModel
+from PyQt5.QtCore import QSize, QByteArray, pyqtSignal, QObject, QAbstractTableModel
 from PyQt5.QtGui import QImage, QPixmap, QBitmap, QPainter
 
 
 class Uart(QObject):
     signal_update_standard_gui = pyqtSignal(int)
 
-    def __init__(self,parent=None):
+    def __init__(self, parent=None):
         super(Uart, self).__init__(parent)
         # Qt 串口类
         self.com = QSerialPort()
@@ -33,7 +33,7 @@ class Uart(QObject):
         self.watch_paras = dict()  # 上位机看参数
         self.wave_paras = dict()  # 波形字典
 
-        # 串口发送数据
+        # 串口普通模式发送数据
 
     def com_send_data(self, tx_data: str, is_hex: bool, codetype: str):
         if len(tx_data) == 0:
@@ -59,6 +59,18 @@ class Uart(QObject):
             # except:
             #     QMessageBox.critical(self, '异常', '十六进制发送错误')
             return
+
+    # 串口改参数模式发送函数
+    def com_send_change(self, name: str, tx_data_index: str, tx_data_value: str):
+        if self.com.isOpen():
+            # self.paras.value = self.para_value.text()
+            # print(self.index)
+            tx_data0 = b'\xb1'
+            # self.para_value.setText(tx_data_value)
+            if tx_data_index.isalnum() and tx_data_value.isalnum():
+                self.com.write(tx_data0 + tx_data_index.encode() + b' ' + tx_data_value.encode() + b'\n\x00')
+                self.change_paras[name] = tx_data_value
+            # print("sendParasToMCU")
 
     # 串口接收模式处理函数
     def com_receive_normal(self, is_hex: bool, code_type: str) -> str:
@@ -139,7 +151,7 @@ class Uart(QObject):
                 self.add_to_dict(self.change_paras, list_of_msg)
                 self.signal_update_standard_gui.emit(1)
             elif msg == b'\xb0':  # 改参数模式，成功修改参数
-                pass
+                self.signal_update_standard_gui.emit(-1)
             self.standard_rx_data.clear()
 
     # 将字符串添加到对应的字典中
@@ -148,29 +160,29 @@ class Uart(QObject):
         for entry in list_of_msg:
             if entry != b'':
                 key, value = bytes(entry).split(b':', 1)
-                dic[key.decode(errors='ignored')] = value.decode(errors='ignored')
+                dic[key.decode(errors='ignore')] = value.decode(errors='ignore')
 
     # 串口调参模式处理函数 且 已发送 hyxr
-    def com_receive_para(self):
-        pass
-        # if self.ready_to_get_paras:
-        #     try:
-        #         self.pararxData += self.com.readAll()
-        #         if len(self.pararxData) >= len(self.paraWidgets) * 4:
-        #             # print(len(self.pararxData))
-        #             for i, item in enumerate(self.paraWidgets):
-        #                 rxData = bytes(self.pararxData[0 + i * 4:3 + i * 4])
-        #                 value = int.from_bytes(
-        #                     rxData, 'little', signed=item.paras.signed)
-        #                 item.paras.value = value
-        #                 # self.listWidget_para.setIndexWidget(i, item)
-        #                 item.para_value.setText(str(value))
-        #                 print(i, value)
-        #             self.pararxData.clear()
-        #             self.ready_to_get_paras = False
-        #     except:
-        #         QMessageBox.critical(self, '严重错误', '串口接收数据错误')
-        #         self.ready_to_get_paras = False
-        #         self.pararxData.clear()
+    # def com_receive_para(self):
+    #     pass
+    # if self.ready_to_get_paras:
+    #     try:
+    #         self.pararxData += self.com.readAll()
+    #         if len(self.pararxData) >= len(self.paraWidgets) * 4:
+    #             # print(len(self.pararxData))
+    #             for i, item in enumerate(self.paraWidgets):
+    #                 rxData = bytes(self.pararxData[0 + i * 4:3 + i * 4])
+    #                 value = int.from_bytes(
+    #                     rxData, 'little', signed=item.paras.signed)
+    #                 item.paras.value = value
+    #                 # self.listWidget_para.setIndexWidget(i, item)
+    #                 item.para_value.setText(str(value))
+    #                 print(i, value)
+    #             self.pararxData.clear()
+    #             self.ready_to_get_paras = False
+    #     except:
+    #         QMessageBox.critical(self, '严重错误', '串口接收数据错误')
+    #         self.ready_to_get_paras = False
+    #         self.pararxData.clear()
 
     # def process_standard_rx_data(self):
