@@ -525,9 +525,10 @@ class Ui_MainWindow(object):
         self.Com_Baud_Label.setText(_translate("MainWindow", "波特率"))
         self.Time_Label.setText(_translate("MainWindow", "Time"))
         self.action_uart.setText(_translate("MainWindow", "串口设置(&U)"))
+        self.action_uart.setShortcut(_translate("MainWindow", "Ctrl+U"))
         self.action_exit.setText(_translate("MainWindow", "退出(&T)"))
         self.action_exit.setShortcut(_translate("MainWindow", "Ctrl+Q"))
-        self.actionAbout_Qt.setText(_translate("MainWindow", "About Qt"))
+        self.actionAbout_Qt.setText(_translate("MainWindow", "About &Qt"))
 
 
 from widgetpainter import WidgetPainter
