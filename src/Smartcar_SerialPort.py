@@ -17,8 +17,9 @@ from PyQt5.Qt import QApplication
 from GUI.Ui_SerialPort import Ui_MainWindow
 from PyQt5.QtCore import QDate
 from GUI.ParaItem import Widget_ParaItem
+from src.keyMap import keyMap
 
-import parameter
+# import parameter
 from src.uart import Uart
 
 
@@ -48,6 +49,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         # Qt ListWidget 类
         self.paraWidgets = dict()
         self.cb_index = 0
+        # 弹琴
+        self.transpose = 0
+        self.pressedKeySet = set()
         # self.imgbyte=bitarray.bitarray(endian='big')
         # for i, para in enumerate(parameter.parameterList):
         # para_widget = Widget_ParaItem(
@@ -75,27 +79,32 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     def read_setting_json(self):
         try:
             f = open('setting.json', 'r')
-            data = json.load(f)
-            # 串口设置
-            self.Com_Baud_Combo.setCurrentText(str(data["baude rate"]))
-            # 收发界面
-            self.hexSending_checkBox.setChecked(data['send_hex'])
-            self.hexShowing_checkBox.setChecked(data['receive_hex'])
-            self.comboBox_codetype.setCurrentIndex(data["encode"])
-            # 图像界面
-            self.lineEdit_height.setText(str(data['img_height']))
-            self.lineEdit_width.setText(str(data['img_width']))
-            self.comboBox_imgType.setCurrentIndex(data["img_type"])
-            self.label_img.enable_extra_14_bytes = data["extra_14_bytes"]
-            if data["extra_14_bytes"]:
-                self.label_extra14bytes.setText("额外接收14字节图像")
-                self.label_img.extra_bytes_len = 14
-            self.checkBox_showGrid.setChecked(data["show_grid"])
+        except FileNotFoundError:
+            QMessageBox.warning(self, '警告', '在当前目录下未找到setting.json')
+            return
+        else:
+            try:
+                data = json.load(f)
+                # 串口设置
+                self.Com_Baud_Combo.setCurrentText(str(data["baude rate"]))
+                # 收发界面
+                self.hexSending_checkBox.setChecked(data['send_hex'])
+                self.hexShowing_checkBox.setChecked(data['receive_hex'])
+                self.comboBox_codetype.setCurrentIndex(data["encode"])
+                # 图像界面
+                self.lineEdit_height.setText(str(data['img_height']))
+                self.lineEdit_width.setText(str(data['img_width']))
+                self.comboBox_imgType.setCurrentIndex(data["img_type"])
+                self.label_img.enable_extra_14_bytes = data["extra_14_bytes"]
+                if data["extra_14_bytes"]:
+                    self.label_extra14bytes.setText("额外接收14字节图像")
+                    self.label_img.extra_bytes_len = 14
+                self.checkBox_showGrid.setChecked(data["show_grid"])
 
-        except Exception:
-            QMessageBox.warning(self, '警告', '未找到正确的setting.json')
-        finally:
-            f.close()
+            except Exception:
+                QMessageBox.warning(self, '警告', 'setting.json解析错误')
+            finally:
+                f.close()
 
     # 设置实例
     # def create_items(self):
@@ -320,7 +329,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
             elif index == 1:  # 改参数模式
                 # item.paras.value = value
-                error_keys=list()
+                error_keys = list()
                 for key in self.uart.change_paras:
                     value_str = self.uart.change_paras[key]
                     try:
@@ -361,10 +370,44 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                     del self.uart.change_paras[k]
             elif index == 2:  # 波形模式
                 pass
-        elif index == -1: # 修改参数成功
-            ss = self.uart.standard_rx_data[1:].data().decode(errors='ignore')
-            self.uart.standard_rx_data.clear()
-            QMessageBox.information(self, '成功', '成功修改参数为：'+ss)
+        elif index == -1:  # 修改参数成功
+            # ss = self.uart.standard_rx_data[1:].data().decode(errors='ignore')
+            # self.uart.standard_rx_data.clear()
+            if len(self.uart.list_of_msg) > 0:
+                ss = self.uart.list_of_msg[0].data().decode(errors='ignore')
+                QMessageBox.information(self, '成功', '成功修改参数为：' + ss)
+
+    def keyPressEvent(self, event):
+        if event.isAutoRepeat():
+            return
+        if not self.tabWidget_other.hasFocus() or self.tabWidget_other.currentIndex() != 3 or not self.com.isOpen():
+            return
+        k = event.key()
+        # print(k)
+        # print("keyPress")
+        self.pressedKeySet.add(k)
+        self.transpose = self.comboBox_transpose.currentIndex() - 3
+
+        try:
+            frenq = int(261.62557 * (2 ** ((keyMap[k] + self.transpose) / 12)))
+        except KeyError:
+            pass
+        else:
+            # self.com.write(frenq.to_bytes(1, "little", signed=False))
+            self.uart.com.write(b'\xb9' + str(frenq).encode(errors='ignore') + b'\n\x00')
+
+    def keyReleaseEvent(self, event):
+        # print("keyRelease")
+        if event.isAutoRepeat():
+            return
+        if not self.tabWidget_other.hasFocus() or self.tabWidget_other.currentIndex() != 3 or not self.com.isOpen():
+            return
+
+        k = event.key()
+        # print("keyRelease")
+        self.pressedKeySet.discard(k)
+        if len(self.pressedKeySet) == 0:
+            self.uart.com.write(b'\xb9' + b'0' + b'\n\x00')
 
     # def clear_read_buffer(self):
     #     pass
