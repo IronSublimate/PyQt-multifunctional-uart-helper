@@ -1,12 +1,9 @@
-build
-dist
 output
-res/__pycache__
-GUI/__pycache__
-OpenCV/__pycache__
+
 __pycache__
-dist.zip
+*.zip
 venv
 .idea
-
+/install/*
+!/install/CMD_Pyinstaller.bat
 PyQt5-uart-helper.spec

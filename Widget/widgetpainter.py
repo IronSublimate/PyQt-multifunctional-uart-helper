@@ -15,14 +15,14 @@ class WidgetPainter(QWidget):
         # self.parentUi = None
         self.imgWidth = 80
         self.imgHeight = 60
-        self.label_position = None#: QLabel
-        self.label_pause= None#: QLabel
+        self.label_position = None  #: QLabel
+        self.label_pause = None  #: QLabel
         self.grid_points = []
         self.enable_grid = False
         self.pause = False
         self.enable_extra_14_bytes = False
         self.extra_bytes_len = 0
-        self.extra_data = None #tuple
+        self.extra_data = None  # tuple
         # [0]中心点的行数
         # [1]中心点的列数
         # [2]列左极限
@@ -68,7 +68,7 @@ class WidgetPainter(QWidget):
             painter.drawEllipse(self.extra_data[2] * pix_width, self.extra_data[0] * pix_height, pix_width, pix_height)
             painter.drawEllipse(self.extra_data[3] * pix_width, self.extra_data[0] * pix_height, pix_width, pix_height)
             painter.drawEllipse(self.extra_data[4] * pix_width, self.extra_data[0] * pix_height, pix_width, pix_height)
-            
+
         if self.enable_grid:
             painter.setPen(Qt.darkBlue)
             painter.drawLines(self.grid_points)

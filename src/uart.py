@@ -1,19 +1,19 @@
 import binascii
 import re
-from PyQt5.QtSerialPort import QSerialPort, QSerialPortInfo
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtCore import QSize, QByteArray, pyqtSignal, QObject, QAbstractTableModel
-from PyQt5.QtGui import QImage, QPixmap, QBitmap, QPainter
+from PyQt5.QtSerialPort import QSerialPort
+# from PyQt5.QtGui import QPixmap
+# from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtCore import QSize, QByteArray, pyqtSignal
+from PyQt5.QtGui import QImage, QPixmap, QBitmap
 
 
-class Uart(QObject):
+class Uart(QSerialPort):
     signal_update_standard_gui = pyqtSignal(int)
 
     def __init__(self, parent=None):
         super(Uart, self).__init__(parent)
         # Qt 串口类
-        self.com = QSerialPort()
+        # self.com = QSerialPort()
         self.comParity = (QSerialPort.NoParity, QSerialPort.EvenParity, QSerialPort.OddParity, QSerialPort.SpaceParity,
                           QSerialPort.MarkParity)
         self.list_of_msg = list()
@@ -40,7 +40,7 @@ class Uart(QObject):
         if len(tx_data) == 0:
             return
         if not is_hex:
-            self.com.write(tx_data.encode(codetype))
+            self.write(tx_data.encode(codetype))
         else:
             data = tx_data.replace(' ', '')
             # 如果16进制不是偶数个字符, 去掉最后一个, [ ]左闭右开
@@ -56,28 +56,28 @@ class Uart(QObject):
 
             # 发送16进制数据, 发送格式如 ‘31 32 33 41 42 43’, 代表'123ABC'
             # try:
-            self.com.write(hex_data)
+            self.write(hex_data)
             # except:
             #     QMessageBox.critical(self, '异常', '十六进制发送错误')
             return
 
     # 串口改参数模式发送函数
     def com_send_change(self, name: str, tx_data_index: str, tx_data_value: str):
-        if self.com.isOpen():
+        if self.isOpen():
             # self.paras.value = self.para_value.text()
             # print(self.index)
             tx_data0 = b'\xb1'
             # self.para_value.setText(tx_data_value)
             if tx_data_index.isalnum() and tx_data_value.isalnum():
-                self.com.write(tx_data0 + tx_data_index.encode() + b' ' + tx_data_value.encode() + b'\n\x00')
+                self.write(tx_data0 + tx_data_index.encode() + b' ' + tx_data_value.encode() + b'\n\x00')
                 self.change_paras[name] = tx_data_value
             # print("sendParasToMCU")
 
     # 串口接收模式处理函数
     def com_receive_normal(self, is_hex: bool, code_type: str) -> str:
-        rx_data = bytes(self.com.readAll())
+        rx_data = bytes(self.readAll())
         if not is_hex:
-            # code_type = self.comboBox_codetype.currentText()
+            # code_type = selfboBox_codetype.currentText()
             # self.textEdit_Recive.insertPlainText(rx_data.decode(code_type, errors='replace'))
             return rx_data.decode(code_type, errors='replace')
         else:
@@ -92,7 +92,7 @@ class Uart(QObject):
     # 串口图像模式处理函数
     def com_receive_image(self, cb_index, extra_bytes_len) -> (QBitmap, tuple):
         if len(self.img_rx_data) == 0:
-            self.img_rx_data = self.com.readAll()
+            self.img_rx_data = self.readAll()
             # print(type(self.imgrxData))
             if self.img_rx_data[:2] != b'\x01\xfe':  # 不是图像的起始位
                 self.img_rx_data.clear()
@@ -101,11 +101,11 @@ class Uart(QObject):
                 # self.imgrxData=self.imgrxData[2:]
                 return None
         else:
-            self.img_rx_data += self.com.readAll()
+            self.img_rx_data += self.readAll()
         # if self.imgrxData[:2]==b'\x01\xfe' and self.imgrxData[-2:]==b'\xfe\x01':
         if len(self.img_rx_data) >= self.totalImgSize + 2 + extra_bytes_len:  # 校验位两位，其余14位为传的数据
-            self.com.clear()
-            # cb_index = self.comboBox_imgType.currentIndex()
+            self.clear()
+            # cb_index = selfboBox_imgType.currentIndex()
             extra_data = tuple(
                 bytes(self.img_rx_data[2:2 + extra_bytes_len]))  # 14位额外数据
             # print(type( self.label_img.extra_data[0]))
@@ -131,7 +131,7 @@ class Uart(QObject):
 
     # 串口其他模式处理函数
     def com_receive_standard(self):
-        rx_data = self.com.readAll()
+        rx_data = self.readAll()
         self.standard_rx_data += rx_data
         while True:
             index = self.standard_rx_data.indexOf(b'\x00')
@@ -178,7 +178,7 @@ class Uart(QObject):
     #     pass
     # if self.ready_to_get_paras:
     #     try:
-    #         self.pararxData += self.com.readAll()
+    #         self.pararxData += self.readAll()
     #         if len(self.pararxData) >= len(self.paraWidgets) * 4:
     #             # print(len(self.pararxData))
     #             for i, item in enumerate(self.paraWidgets):

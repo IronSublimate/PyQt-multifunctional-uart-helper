@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'f:\NXP\2018NXP\2侯宇轩工具\PyQt5-SerialPort-smartcar\GUI\Loading.ui'
+# Form implementation generated from reading ui file 'Loading.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.12.1
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_Form_loading(object):
     def setupUi(self, Form_loading):
@@ -74,8 +75,9 @@ class Ui_Form_loading(object):
     def retranslateUi(self, Form_loading):
         _translate = QtCore.QCoreApplication.translate
         Form_loading.setWindowTitle(_translate("Form_loading", "Form"))
-        self.Title.setText(_translate("Form_loading", "PyQt智能车串口调试助手"))
+        self.Title.setText(_translate("Form_loading", "PyQt5多功能串口调试助手"))
         self.Author.setText(_translate("Form_loading", "北京理工大学  侯宇轩"))
         self.label.setText(_translate("Form_loading", "加载中..."))
+
 
 import res_rc

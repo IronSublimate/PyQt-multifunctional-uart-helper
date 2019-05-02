@@ -60,7 +60,7 @@
 }</string>
          </property>
          <property name="text">
-          <string>PyQt智能车串口调试助手</string>
+          <string>PyQt5多功能串口调试助手</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>

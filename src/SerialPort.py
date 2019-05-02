@@ -18,7 +18,8 @@ from GUI.Ui_SerialPort import Ui_MainWindow
 from PyQt5.QtCore import QDate
 from GUI.ParaItem import Widget_ParaItem
 from src.keyMap import keyMap
-
+from Widget.Piano import PianoView
+from Widget.widgetpainter import WidgetPainter
 # import parameter
 from src.uart import Uart
 
@@ -50,12 +51,11 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.paraWidgets = dict()
         self.cb_index = 0
         # 弹琴
-        self.transpose = 0
-        self.pressedKeySet = set()
+
         # self.imgbyte=bitarray.bitarray(endian='big')
         # for i, para in enumerate(parameter.parameterList):
         # para_widget = Widget_ParaItem(
-        #     para, str(i), self.uart.com, self.listWidget_para)
+        #     para, str(i), self.uart, self.listWidget_para)
         # # self.listWidget_para.addItem()
         # self.paraWidgets.append(para_widget)
         # para_listWidgetItem = QListWidgetItem(self.listWidget_para)
@@ -75,6 +75,41 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     #     except:
     #         QMessageBox.warning(self, '警告', '未找到正确的parameter.json')
     #         parameter.parameterList.clear()
+
+    # 设置信号与槽
+    def create_signal_slot(self):
+        self.Com_Open_Button.clicked.connect(self.com_open_button_clicked)
+        self.Com_Close_Button.clicked.connect(self.com_close_button_clicked)
+        self.Send_Button.clicked.connect(self.send_button_clicked)
+        self.Com_Refresh_Button.clicked.connect(
+            self.com_refresh_button_clicked)
+        self.uart.readyRead.connect(self.com_receive_data)  # 接收数据
+        # self.uart.connectNotify.connect(lambda x: print("New connect"))
+        self.hexSending_checkBox.stateChanged.connect(self.hex_showing_clicked)
+        self.hexSending_checkBox.stateChanged.connect(self.hex_sending_clicked)
+        # self.About_Button.clicked.connect(self.Goto_GitHub)
+        self.pushButton_readMCU.clicked.connect(self.send_read_mcu)
+        # self.checkBox_UseOpenCV.stateChanged.connect(self.on_open_cv_use_clicked)
+        self.checkBox_showGrid.stateChanged.connect(self.on_show_grid_changed)
+        self.pushButton_saveImg.clicked.connect(self.save_img)
+        # self.textEdit_Recive.textChanged.connect(lambda: self.textEdit_Recive.moveCursor(QTextCursor.End))
+        # self.textEdit_Recive.
+
+        # 自定义信号槽
+        self.uart.signal_update_standard_gui.connect(self.update_standard_gui)
+        self.tabWidget_other.currentChanged.connect(self.update_standard_gui)
+        self.widget_piano.send_msg.connect(self.uart.write)
+
+        # Action
+        self.action_uart.changed.connect(lambda: self.dockWidget_uart.setHidden(not self.action_uart.isChecked()))
+        self.dockWidget_uart.visibilityChanged.connect(lambda b: self.action_uart.setChecked(b))
+        self.action_exit.triggered.connect(lambda: QApplication.exit())
+        self.actionAbout_Qt.triggered.connect(lambda: QMessageBox.aboutQt(self, "About Qt"))
+        # 跳转到 GitHub 查看源代码
+        # def Goto_GitHub(self):
+        #     self.browser = QWebEngineView()
+        #     self.browser.load(QUrl('https://github.com/Oslomayor/PyQt5-SerialPort-Stable'))
+        #     self.setCentralWidget(self.browser)
 
     def read_setting_json(self):
         try:
@@ -110,38 +145,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # def create_items(self):
     #     pass
 
-    # 设置信号与槽
-    def create_signal_slot(self):
-        self.Com_Open_Button.clicked.connect(self.com_open_button_clicked)
-        self.Com_Close_Button.clicked.connect(self.com_close_button_clicked)
-        self.Send_Button.clicked.connect(self.send_button_clicked)
-        self.Com_Refresh_Button.clicked.connect(
-            self.com_refresh_button_clicked)
-        self.uart.com.readyRead.connect(self.com_receive_data)  # 接收数据
-        # self.uart.com.connectNotify.connect(lambda x: print("New connect"))
-        self.hexSending_checkBox.stateChanged.connect(self.hex_showing_clicked)
-        self.hexSending_checkBox.stateChanged.connect(self.hex_sending_clicked)
-        # self.About_Button.clicked.connect(self.Goto_GitHub)
-        self.pushButton_readMCU.clicked.connect(self.send_read_mcu)
-        # self.checkBox_UseOpenCV.stateChanged.connect(self.on_open_cv_use_clicked)
-        self.checkBox_showGrid.stateChanged.connect(self.on_show_grid_changed)
-        self.pushButton_saveImg.clicked.connect(self.save_img)
-        # self.textEdit_Recive.textChanged.connect(self.textEdit_Recive.moveCursor(QTextCursor.End))
-        self.uart.signal_update_standard_gui.connect(self.update_standard_gui)
-        self.tabWidget_other.currentChanged.connect(self.update_standard_gui)
-
-        # Action
-        self.action_uart.changed.connect(lambda: self.dockWidget_uart.setHidden(not self.action_uart.isChecked()))
-        self.dockWidget_uart.visibilityChanged.connect(lambda b: self.action_uart.setChecked(b))
-        self.action_exit.triggered.connect(lambda: QApplication.exit())
-        self.actionAbout_Qt.triggered.connect(lambda: QMessageBox.aboutQt(self, "About Qt"))
-        # 跳转到 GitHub 查看源代码
-        # def Goto_GitHub(self):
-        #     self.browser = QWebEngineView()
-        #     self.browser.load(QUrl('https://github.com/Oslomayor/PyQt5-SerialPort-Stable'))
-        #     self.setCentralWidget(self.browser)
-
-        # 显示时间
+    # 显示时间
 
     def show_time(self):
         self.Time_Label.setText(time.strftime(
@@ -198,14 +202,14 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         # com Open Code here #
         com_name = self.Com_Name_Combo.currentText()
         com_baud = int(self.Com_Baud_Combo.currentText())
-        self.uart.com.setPortName(com_name)
-        self.uart.com.setBaudRate(com_baud)
-        self.uart.com.setParity(self.uart.comParity[self.comboBox_parity.currentIndex()])
-        self.uart.com.setDataBits(int(self.comboBox_data.currentText()))
-        self.uart.com.setStopBits(int(self.comboBox_stop.currentText()))
+        self.uart.setPortName(com_name)
+        self.uart.setBaudRate(com_baud)
+        self.uart.setParity(self.uart.comParity[self.comboBox_parity.currentIndex()])
+        self.uart.setDataBits(int(self.comboBox_data.currentText()))
+        self.uart.setStopBits(int(self.comboBox_stop.currentText()))
 
         try:
-            if not self.uart.com.open(QSerialPort.ReadWrite):
+            if not self.uart.open(QSerialPort.ReadWrite):
                 QMessageBox.critical(self, '严重错误', '串口打开失败')
                 return
         except:
@@ -222,7 +226,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.set_widgets_enabled(False)
 
     def com_close_button_clicked(self):
-        self.uart.com.close()
+        self.uart.close()
         # self.Com_Close_Button.setEnabled(False)
         # self.Com_Open_Button.setEnabled(True)
         # self.Com_Refresh_Button.setEnabled(True)
@@ -238,7 +242,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             try:
                 msg = self.uart.com_receive_normal(self.hexShowing_checkBox.isChecked(),
                                                    self.comboBox_codetype.currentText())
-                self.textEdit_Recive.insertPlainText(msg)
+                self.textEdit_Recive.moveCursor(QTextCursor.End)
+                # self.textEdit_Recive.insertPlainText(msg)
+                self.textEdit_Recive.append(msg)
             except:
                 QMessageBox.critical(self, '严重错误', '串口接收数据错误')
         elif tab_widget_current_index == 1:  # 图像模式
@@ -253,10 +259,10 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             self.uart.com_receive_standard()  # 标准模式读取
 
     def send_read_mcu(self):
-        if self.uart.com.isOpen():
+        if self.uart.isOpen():
             start = b'\xb3'
-            self.uart.com.write(start)
-        #     self.uart.com.write(b'hyxr')
+            self.uart.write(start)
+        #     self.uart.write(b'hyxr')
         #     self.ready_to_get_paras = True
 
     # def on_open_cv_use_clicked(self):
@@ -376,38 +382,6 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             if len(self.uart.list_of_msg) > 0:
                 ss = self.uart.list_of_msg[0].data().decode(errors='ignore')
                 QMessageBox.information(self, '成功', '成功修改参数为：' + ss)
-
-    def keyPressEvent(self, event):
-        if event.isAutoRepeat():
-            return
-        if not self.tabWidget_other.hasFocus() or self.tabWidget_other.currentIndex() != 3 or not self.com.isOpen():
-            return
-        k = event.key()
-        # print(k)
-        # print("keyPress")
-        self.pressedKeySet.add(k)
-        self.transpose = self.comboBox_transpose.currentIndex() - 3
-
-        try:
-            frenq = int(261.62557 * (2 ** ((keyMap[k] + self.transpose) / 12)))
-        except KeyError:
-            pass
-        else:
-            # self.com.write(frenq.to_bytes(1, "little", signed=False))
-            self.uart.com.write(b'\xb9' + str(frenq).encode(errors='ignore') + b'\n\x00')
-
-    def keyReleaseEvent(self, event):
-        # print("keyRelease")
-        if event.isAutoRepeat():
-            return
-        if not self.tabWidget_other.hasFocus() or self.tabWidget_other.currentIndex() != 3 or not self.com.isOpen():
-            return
-
-        k = event.key()
-        # print("keyRelease")
-        self.pressedKeySet.discard(k)
-        if len(self.pressedKeySet) == 0:
-            self.uart.com.write(b'\xb9' + b'0' + b'\n\x00')
 
     # def clear_read_buffer(self):
     #     pass

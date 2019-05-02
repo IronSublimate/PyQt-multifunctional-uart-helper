@@ -25,7 +25,7 @@
        <enum>QTabWidget::West</enum>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <property name="movable">
        <bool>false</bool>
@@ -433,7 +433,7 @@ p, li { white-space: pre-wrap; }
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>3</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tab_watch_parameter">
            <attribute name="title">
@@ -498,14 +498,51 @@ p, li { white-space: pre-wrap; }
            <attribute name="title">
             <string>显示波形</string>
            </attribute>
+           <layout class="QGridLayout" name="gridLayout_6">
+            <item row="0" column="0">
+             <widget class="DynamicWaveView" name="graphicsView"/>
+            </item>
+           </layout>
           </widget>
           <widget class="QWidget" name="tab_piano">
            <attribute name="title">
             <string>弹琴</string>
            </attribute>
            <layout class="QGridLayout" name="gridLayout_4">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_11">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>弹琴</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <spacer name="horizontalSpacer_8">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>560</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
             <item row="1" column="0">
              <widget class="QGroupBox" name="groupBox_settings">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="title">
                <string>设置</string>
               </property>
@@ -587,44 +624,8 @@ p, li { white-space: pre-wrap; }
               </layout>
              </widget>
             </item>
-            <item row="1" column="1">
-             <spacer name="horizontalSpacer_8">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>560</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item row="0" column="0">
-             <widget class="QLabel" name="label_11">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>弹琴</string>
-              </property>
-             </widget>
-            </item>
             <item row="2" column="0" colspan="2">
-             <spacer name="verticalSpacer_2">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
-              </property>
-             </spacer>
+             <widget class="PianoView" name="widget_piano" native="true"/>
             </item>
            </layout>
           </widget>
@@ -1060,7 +1061,7 @@ background-color: rgb(0, 0, 0);*/</string>
    <property name="shortcut">
     <string>Ctrl+Q</string>
    </property>
-   <property name="shortcutVisibleInContextMenu">
+   <property name="shortcutVisibleInContextMenu" stdset="0">
     <bool>true</bool>
    </property>
   </action>
@@ -1074,8 +1075,19 @@ background-color: rgb(0, 0, 0);*/</string>
   <customwidget>
    <class>WidgetPainter</class>
    <extends>QWidget</extends>
-   <header>widgetpainter.h</header>
+   <header>Widget/widgetpainter.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>PianoView</class>
+   <extends>QWidget</extends>
+   <header>Widget/Piano.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>DynamicWaveView</class>
+   <extends>QGraphicsView</extends>
+   <header>Widget/Wave.h</header>
   </customwidget>
  </customwidgets>
  <resources>
