@@ -1,14 +1,20 @@
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QWidget
 from src.keyMap import keyMap
+from GUI.Ui_piano import Ui_Form
 
 
-class PianoView(QWidget):
+class PianoView(QWidget, Ui_Form):
     send_msg = pyqtSignal(bytes)
+
     def __init__(self, parent=None):
         super(PianoView, self).__init__(parent)
+        self.setupUi(self)
         self.transpose = 0
         self.pressedKeySet = set()
+
+    # def on_tranpose_change(self, x: int):
+    #     self.transpose = x - 3
 
     def keyPressEvent(self, event):
         if event.isAutoRepeat():

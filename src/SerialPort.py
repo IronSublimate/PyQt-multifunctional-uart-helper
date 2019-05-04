@@ -92,13 +92,16 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         # self.checkBox_UseOpenCV.stateChanged.connect(self.on_open_cv_use_clicked)
         self.checkBox_showGrid.stateChanged.connect(self.on_show_grid_changed)
         self.pushButton_saveImg.clicked.connect(self.save_img)
+        # self.comboBox_transpose.currentIndexChanged.connect(
+        #     self.tab_piano.on_tranpose_change
+        # )
         # self.textEdit_Recive.textChanged.connect(lambda: self.textEdit_Recive.moveCursor(QTextCursor.End))
         # self.textEdit_Recive.
 
         # 自定义信号槽
         self.uart.signal_update_standard_gui.connect(self.update_standard_gui)
         self.tabWidget_other.currentChanged.connect(self.update_standard_gui)
-        self.widget_piano.send_msg.connect(self.uart.write)
+        self.tab_piano.send_msg.connect(self.uart.write)
 
         # Action
         self.action_uart.changed.connect(lambda: self.dockWidget_uart.setHidden(not self.action_uart.isChecked()))
@@ -375,7 +378,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 for k in error_keys:
                     del self.uart.change_paras[k]
             elif index == 2:  # 波形模式
-                pass
+                self.graphicsView.add_new_data(self.uart.wave_paras)
         elif index == -1:  # 修改参数成功
             # ss = self.uart.standard_rx_data[1:].data().decode(errors='ignore')
             # self.uart.standard_rx_data.clear()
