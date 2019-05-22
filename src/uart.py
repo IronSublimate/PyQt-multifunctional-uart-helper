@@ -140,9 +140,6 @@ class Uart(QSerialPort):
             # rx_data.resize(index)
             standard_rx_data_temp = QByteArray(self.standard_rx_data[:index])
             self.standard_rx_data = self.standard_rx_data[index + 1:]
-            # self.standard_rx_data.clear()
-            # self.standard_rx_data += rx_data[index + 1:]
-            # standard_rx_data_temp += rx_data[:index]
 
             if len(standard_rx_data_temp) <= 0:
                 continue
@@ -161,16 +158,17 @@ class Uart(QSerialPort):
                 self.signal_update_standard_gui.emit(1)
             elif msg == b'\xb0':  # 改参数模式，成功修改参数
                 self.signal_update_standard_gui.emit(-1)
-        # else:
-        #     self.standard_rx_data += rx_data
 
     # 将字符串添加到对应的字典中
     @staticmethod
     def add_to_dict(dic: dict, list_of_msg: list):
         for entry in list_of_msg:
             if entry != b'':
-                key, value = bytes(entry).split(b':', 1)
-                dic[key.decode(errors='ignore')] = value.decode(errors='ignore')
+                try:
+                    key, value = bytes(entry).split(b':', 1)
+                    dic[key.decode(errors='ignore')] = value.decode(errors='ignore')
+                except ValueError:
+                    pass
                 # dic[key.decode(errors='ignore').replace('\x00', '')] = value.decode(errors='ignore')
 
     # 串口调参模式处理函数 且 已发送 hyxr

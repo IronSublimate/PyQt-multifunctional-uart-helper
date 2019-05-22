@@ -13,7 +13,7 @@ keyMap = {
     Qt.Key_9: 14,
     # Qt.Key_Equal:16,
     Qt.Key_Plus: 16,
-    Qt.Key_Slash: 18,
+    Qt.Key_Slash: 17,
     Qt.Key_Asterisk: 19,
     Qt.Key_Minus: 21,
 

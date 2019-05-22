@@ -6,20 +6,20 @@ import json
 # sys.path.append("GUI")
 
 import time
-from PyQt5.QtCore import QTimer, Qt, QUrl, QCoreApplication
+from PyQt5.QtCore import QTimer, Qt
 # from PyQt5.QtWidgets import *
 from PyQt5.QtSerialPort import QSerialPort, QSerialPortInfo
-from PyQt5.QtWidgets import QMainWindow, QWidget, QListWidgetItem, QMessageBox, QGraphicsScene, QTableWidgetItem
-from PyQt5.QtGui import QImage, QPixmap, QPainter, QBitmap, QTextCursor, QGuiApplication
+from PyQt5.QtWidgets import QMainWindow,  QListWidgetItem, QMessageBox,  QTableWidgetItem
+from PyQt5.QtGui import QImage, QPixmap,  QTextCursor
 from PyQt5.Qt import QApplication
 
 # from PyQt5.QtWebEngineWidgets import *
 from GUI.Ui_SerialPort import Ui_MainWindow
-from PyQt5.QtCore import QDate
+# from PyQt5.QtCore import QDate
 from GUI.ParaItem import Widget_ParaItem
-from src.keyMap import keyMap
-from Widget.Piano import PianoView
-from Widget.widgetpainter import WidgetPainter
+# from src.keyMap import keyMap
+# from Widget.Piano import PianoView
+# from Widget.widgetpainter import WidgetPainter
 # import parameter
 from src.uart import Uart
 
@@ -92,6 +92,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         # self.checkBox_UseOpenCV.stateChanged.connect(self.on_open_cv_use_clicked)
         self.checkBox_showGrid.stateChanged.connect(self.on_show_grid_changed)
         self.pushButton_saveImg.clicked.connect(self.save_img)
+        self.pushButton_clear_dict.clicked.connect(self.on_clear_dict)
         # self.comboBox_transpose.currentIndexChanged.connect(
         #     self.tab_piano.on_tranpose_change
         # )
@@ -245,9 +246,13 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             try:
                 msg = self.uart.com_receive_normal(self.hexShowing_checkBox.isChecked(),
                                                    self.comboBox_codetype.currentText())
+                # self.textEdit_Recive.append(msg)
+
                 self.textEdit_Recive.moveCursor(QTextCursor.End)
+                self.textEdit_Recive.insertPlainText(msg)
+                # self.textEdit_Recive.update()
                 # self.textEdit_Recive.insertPlainText(msg)
-                self.textEdit_Recive.append(msg)
+
             except:
                 QMessageBox.critical(self, '严重错误', '串口接收数据错误')
         elif tab_widget_current_index == 1:  # 图像模式
@@ -292,6 +297,12 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         # QMessageBox.warning(self, '成功', '保存成功')
         QMessageBox.information(self, '成功', '保存成功')
 
+    def on_clear_dict(self):
+        self.uart.wave_paras.clear()
+        self.uart.watch_paras.clear()
+        self.tableWidget_para.clear()
+        self.tableWidget_para.setRowCount(0)
+
     def set_widgets_enabled(self, enable: bool):  # 图像模式
         self.Com_Close_Button.setEnabled(not enable)
         self.Com_Open_Button.setEnabled(enable)
@@ -308,77 +319,78 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         # self.checkBox_UseOpenCV.setEnabled(enable)
         # self.checkBox_showGrid.setEnabled(enable)
 
-    def update_standard_gui(self, index):
-        if index == self.tabWidget_other.currentIndex():  # 标准（其他）模式下的tabwigdget
-            if index == 0:  # 读参数模式
-                # self.tableWidget_para.setRowCount(len(self.uart.watch_paras)+len(self.uart.wave_paras))
-                for key in self.uart.watch_paras:
-                    lis = self.tableWidget_para.findItems(key, Qt.MatchExactly)
-                    value = self.uart.watch_paras[key]
-                    if len(lis) > 0 and lis[0].column() == 0:  # 有该元素
-                        row = lis[0].row()
-                        self.tableWidget_para.item(row, 1).setText(value)
-                    else:  # 没有该元素
-                        length = self.tableWidget_para.rowCount()
-                        self.tableWidget_para.insertRow(length)
-                        self.tableWidget_para.setItem(length, 0, QTableWidgetItem(key))
-                        self.tableWidget_para.setItem(length, 1, QTableWidgetItem(value))
+    def update_standard_gui(self, index_receive):
+        # if index_receive == self.tabWidget_other.currentIndex():  # 标准（其他）模式下的tabwigdget
+        index = self.tabWidget_other.currentIndex()
+        if index == 0 and index_receive in (0, 2):  # 读参数模式
+            # self.tableWidget_para.setRowCount(len(self.uart.watch_paras)+len(self.uart.wave_paras))
+            for key in self.uart.watch_paras:
+                lis = self.tableWidget_para.findItems(key, Qt.MatchExactly)
+                value = self.uart.watch_paras[key]
+                if len(lis) > 0 and lis[0].column() == 0:  # 有该元素
+                    row = lis[0].row()
+                    self.tableWidget_para.item(row, 1).setText(value)
+                else:  # 没有该元素
+                    length = self.tableWidget_para.rowCount()
+                    self.tableWidget_para.insertRow(length)
+                    self.tableWidget_para.setItem(length, 0, QTableWidgetItem(key))
+                    self.tableWidget_para.setItem(length, 1, QTableWidgetItem(value))
 
-                for key in self.uart.wave_paras:
-                    lis = self.tableWidget_para.findItems(key, Qt.MatchExactly)
-                    value = self.uart.wave_paras[key]
-                    if len(lis) > 0 and lis[0].column() == 0:  # 有该元素
-                        row = lis[0].row()
-                        self.tableWidget_para.item(row, 1).setText(value)
-                    else:  # 没有该元素
-                        length = self.tableWidget_para.rowCount()
-                        self.tableWidget_para.insertRow(length)
-                        self.tableWidget_para.setItem(length, 0, QTableWidgetItem(key))
-                        self.tableWidget_para.setItem(length, 1, QTableWidgetItem(value))
+            for key in self.uart.wave_paras:
+                lis = self.tableWidget_para.findItems(key, Qt.MatchExactly)
+                value = self.uart.wave_paras[key]
+                if len(lis) > 0 and lis[0].column() == 0:  # 有该元素
+                    row = lis[0].row()
+                    self.tableWidget_para.item(row, 1).setText(value)
+                else:  # 没有该元素
+                    length = self.tableWidget_para.rowCount()
+                    self.tableWidget_para.insertRow(length)
+                    self.tableWidget_para.setItem(length, 0, QTableWidgetItem(key))
+                    self.tableWidget_para.setItem(length, 1, QTableWidgetItem(value))
 
-            elif index == 1:  # 改参数模式
-                # item.paras.value = value
-                error_keys = list()
-                for key in self.uart.change_paras:
-                    value_str = self.uart.change_paras[key]
-                    try:
-                        pos, va = value_str.split(',', 1)
-                    except:
-                        print('read change para error')
-                        error_keys.append(key)
-                        # self.uart.change_paras.pop(key)
-                        pass
-                    else:  # 正常解析
-                        if key in self.paraWidgets:
-                            self.paraWidgets[key].para_value.setText(va)
-                        else:
-                            para_widget = Widget_ParaItem(key, pos, va, self.uart)
-                            self.paraWidgets[key] = para_widget
-                            para_list_widget_item = QListWidgetItem(self.listWidget_para)
-                            self.listWidget_para.addItem(para_list_widget_item)
-                            self.listWidget_para.setItemWidget(
-                                para_list_widget_item, para_widget)
-                            size = para_widget.minimumSizeHint()
-                            para_list_widget_item.setSizeHint(size)
-                    # #
-                    # index_2 = int(key)
-                    # if index_2 >= len(self.paraWidgets):
-                    #
-                    #     # self.listWidget_para.addItem()
-                    #     self.paraWidgets.append(para_widget)
-                    #     para_listWidgetItem = QListWidgetItem(self.listWidget_para)
-                    #     self.listWidget_para.addItem(para_listWidgetItem)
-                    #     self.listWidget_para.setItemWidget(
-                    #         para_listWidgetItem, para_widget)
-                    #     size = para_widget.minimumSizeHint()
-                    #     para_listWidgetItem.setSizeHint(size)
-                    # self.paraWidgets[index_2].index = key
-                    # self.paraWidgets[index_2].para_value.setText(self.uart.change_paras[key])
-                    # self.paraWidgets[index_2].paras.value = self.uart.change_paras[key]
-                for k in error_keys:
-                    del self.uart.change_paras[k]
-            elif index == 2:  # 波形模式
-                self.graphicsView.add_new_data(self.uart.wave_paras)
+        elif index == 1 and index_receive == 1:  # 改参数模式
+            # item.paras.value = value
+            error_keys = list()
+            for key in self.uart.change_paras:
+                value_str = self.uart.change_paras[key]
+                try:
+                    pos, va = value_str.split(',', 1)
+                except:
+                    print('read change para error')
+                    error_keys.append(key)
+                    # self.uart.change_paras.pop(key)
+                    pass
+                else:  # 正常解析
+                    if key in self.paraWidgets:
+                        self.paraWidgets[key].para_value.setText(va)
+                    else:
+                        para_widget = Widget_ParaItem(key, pos, va, self.uart)
+                        self.paraWidgets[key] = para_widget
+                        para_list_widget_item = QListWidgetItem(self.listWidget_para)
+                        self.listWidget_para.addItem(para_list_widget_item)
+                        self.listWidget_para.setItemWidget(
+                            para_list_widget_item, para_widget)
+                        size = para_widget.minimumSizeHint()
+                        para_list_widget_item.setSizeHint(size)
+                # #
+                # index_2 = int(key)
+                # if index_2 >= len(self.paraWidgets):
+                #
+                #     # self.listWidget_para.addItem()
+                #     self.paraWidgets.append(para_widget)
+                #     para_listWidgetItem = QListWidgetItem(self.listWidget_para)
+                #     self.listWidget_para.addItem(para_listWidgetItem)
+                #     self.listWidget_para.setItemWidget(
+                #         para_listWidgetItem, para_widget)
+                #     size = para_widget.minimumSizeHint()
+                #     para_listWidgetItem.setSizeHint(size)
+                # self.paraWidgets[index_2].index = key
+                # self.paraWidgets[index_2].para_value.setText(self.uart.change_paras[key])
+                # self.paraWidgets[index_2].paras.value = self.uart.change_paras[key]
+            for k in error_keys:
+                del self.uart.change_paras[k]
+        elif index == 2 and index_receive == 2:  # 波形模式
+            self.graphicsView.add_new_data(self.uart.wave_paras)
         elif index == -1:  # 修改参数成功
             # ss = self.uart.standard_rx_data[1:].data().decode(errors='ignore')
             # self.uart.standard_rx_data.clear()

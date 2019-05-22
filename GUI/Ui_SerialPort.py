@@ -31,6 +31,14 @@ class Ui_MainWindow(object):
         self.textEdit_Recive = QtWidgets.QTextEdit(self.tab_msg)
         self.textEdit_Recive.setStyleSheet("/*background-color: rgb(255, 255, 255);\n"
 "background-color: rgb(0, 0, 0);*/")
+        self.textEdit_Recive.setUndoRedoEnabled(False)
+        self.textEdit_Recive.setReadOnly(True)
+        self.textEdit_Recive.setHtml("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>")
+        self.textEdit_Recive.setAcceptRichText(False)
         self.textEdit_Recive.setObjectName("textEdit_Recive")
         self.gridLayout_3.addWidget(self.textEdit_Recive, 2, 0, 1, 1)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
@@ -222,14 +230,19 @@ class Ui_MainWindow(object):
         self.tabWidget_other.setObjectName("tabWidget_other")
         self.tab_watch_parameter = QtWidgets.QWidget()
         self.tab_watch_parameter.setObjectName("tab_watch_parameter")
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.tab_watch_parameter)
-        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.gridLayout_7 = QtWidgets.QGridLayout(self.tab_watch_parameter)
+        self.gridLayout_7.setObjectName("gridLayout_7")
+        self.pushButton_clear_dict = QtWidgets.QPushButton(self.tab_watch_parameter)
+        self.pushButton_clear_dict.setObjectName("pushButton_clear_dict")
+        self.gridLayout_7.addWidget(self.pushButton_clear_dict, 1, 1, 1, 1)
+        spacerItem6 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout_7.addItem(spacerItem6, 1, 0, 1, 1)
         self.tableWidget_para = QtWidgets.QTableWidget(self.tab_watch_parameter)
         self.tableWidget_para.setShowGrid(True)
         self.tableWidget_para.setRowCount(0)
         self.tableWidget_para.setColumnCount(2)
         self.tableWidget_para.setObjectName("tableWidget_para")
-        self.verticalLayout_2.addWidget(self.tableWidget_para)
+        self.gridLayout_7.addWidget(self.tableWidget_para, 0, 0, 1, 2)
         self.tabWidget_other.addTab(self.tab_watch_parameter, "")
         self.tab_change_parameter = QtWidgets.QWidget()
         self.tab_change_parameter.setObjectName("tab_change_parameter")
@@ -238,8 +251,8 @@ class Ui_MainWindow(object):
         self.listWidget_para = QtWidgets.QListWidget(self.tab_change_parameter)
         self.listWidget_para.setObjectName("listWidget_para")
         self.gridLayout_5.addWidget(self.listWidget_para, 1, 0, 1, 2)
-        spacerItem6 = QtWidgets.QSpacerItem(570, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.gridLayout_5.addItem(spacerItem6, 2, 0, 1, 1)
+        spacerItem7 = QtWidgets.QSpacerItem(570, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout_5.addItem(spacerItem7, 2, 0, 1, 1)
         self.pushButton_readMCU = QtWidgets.QPushButton(self.tab_change_parameter)
         self.pushButton_readMCU.setObjectName("pushButton_readMCU")
         self.gridLayout_5.addWidget(self.pushButton_readMCU, 2, 1, 1, 1)
@@ -279,6 +292,8 @@ class Ui_MainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
         self.dockWidget_uart = QtWidgets.QDockWidget(MainWindow)
+        self.dockWidget_uart.setFloating(False)
+        self.dockWidget_uart.setFeatures(QtWidgets.QDockWidget.AllDockWidgetFeatures)
         self.dockWidget_uart.setObjectName("dockWidget_uart")
         self.dockWidgetContents_2 = QtWidgets.QWidget()
         self.dockWidgetContents_2.setObjectName("dockWidgetContents_2")
@@ -381,8 +396,8 @@ class Ui_MainWindow(object):
         self.Com_Baud_Label.setObjectName("Com_Baud_Label")
         self.gridLayout.addWidget(self.Com_Baud_Label, 3, 0, 1, 1)
         self.verticalLayout.addLayout(self.gridLayout)
-        spacerItem7 = QtWidgets.QSpacerItem(20, 115, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout.addItem(spacerItem7)
+        spacerItem8 = QtWidgets.QSpacerItem(20, 115, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout.addItem(spacerItem8)
         self.Time_Label = QtWidgets.QLabel(self.dockWidgetContents_2)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -432,7 +447,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(2)
-        self.tabWidget_other.setCurrentIndex(3)
+        self.tabWidget_other.setCurrentIndex(0)
         self.comboBox_data.setCurrentIndex(3)
         self.comboBox_stop.setCurrentIndex(0)
         self.Com_Baud_Combo.setCurrentIndex(10)
@@ -443,11 +458,6 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "PyQt5 多功能串口调试助手"))
-        self.textEdit_Recive.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
         self.label_2.setText(_translate("MainWindow", "发送区"))
         self.hexSending_checkBox.setText(_translate("MainWindow", "16进制发送"))
         self.Send_Button.setText(_translate("MainWindow", "发送"))
@@ -470,6 +480,7 @@ class Ui_MainWindow(object):
         self.checkBox_UseOpenCV.setText(_translate("MainWindow", "使用OpenCV查看图像"))
         self.pushButton_saveImg.setText(_translate("MainWindow", "保存图像"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_img), _translate("MainWindow", "查看图像"))
+        self.pushButton_clear_dict.setText(_translate("MainWindow", "清空"))
         self.tabWidget_other.setTabText(self.tabWidget_other.indexOf(self.tab_watch_parameter), _translate("MainWindow", "查看参数"))
         self.pushButton_readMCU.setText(_translate("MainWindow", "更新上位机数据"))
         self.label_4.setText(_translate("MainWindow", "参数"))
