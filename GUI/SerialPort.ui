@@ -570,6 +570,7 @@ p, li { white-space: pre-wrap; }
      <string>关于(&amp;A)</string>
     </property>
     <addaction name="actionAbout_Qt"/>
+    <addaction name="actionAboutThis"/>
    </widget>
    <widget class="QMenu" name="menu_3">
     <property name="title">
@@ -987,6 +988,11 @@ background-color: rgb(0, 0, 0);*/</string>
   <action name="actionAbout_Qt">
    <property name="text">
     <string>About &amp;Qt</string>
+   </property>
+  </action>
+  <action name="actionAboutThis">
+   <property name="text">
+    <string>关于(&amp;A)</string>
    </property>
   </action>
  </widget>

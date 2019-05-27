@@ -9,8 +9,8 @@ import time
 from PyQt5.QtCore import QTimer, Qt
 # from PyQt5.QtWidgets import *
 from PyQt5.QtSerialPort import QSerialPort, QSerialPortInfo
-from PyQt5.QtWidgets import QMainWindow,  QListWidgetItem, QMessageBox,  QTableWidgetItem
-from PyQt5.QtGui import QImage, QPixmap,  QTextCursor
+from PyQt5.QtWidgets import QMainWindow, QListWidgetItem, QMessageBox, QTableWidgetItem
+from PyQt5.QtGui import QImage, QPixmap, QTextCursor
 from PyQt5.Qt import QApplication
 
 # from PyQt5.QtWebEngineWidgets import *
@@ -31,6 +31,8 @@ from src.uart import Uart
 # import numpy as np
 
 class MyMainWindow(QMainWindow, Ui_MainWindow):
+    version = '1.2.0'
+
     def __init__(self, parent=None):
         super(MyMainWindow, self).__init__(parent)
         self.setupUi(self)
@@ -109,6 +111,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.dockWidget_uart.visibilityChanged.connect(lambda b: self.action_uart.setChecked(b))
         self.action_exit.triggered.connect(lambda: QApplication.exit())
         self.actionAbout_Qt.triggered.connect(lambda: QMessageBox.aboutQt(self, "About Qt"))
+        self.actionAboutThis.triggered.connect(self.on_about_this)
         # 跳转到 GitHub 查看源代码
         # def Goto_GitHub(self):
         #     self.browser = QWebEngineView()
@@ -302,6 +305,10 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.uart.watch_paras.clear()
         self.tableWidget_para.clear()
         self.tableWidget_para.setRowCount(0)
+        self.graphicsView.clear()
+
+    def on_about_this(self):
+        QMessageBox.about(self, "多功能串口调试助手", "版本：%s\n作者：侯宇轩" % self.version)
 
     def set_widgets_enabled(self, enable: bool):  # 图像模式
         self.Com_Close_Button.setEnabled(not enable)
@@ -391,7 +398,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 del self.uart.change_paras[k]
         elif index == 2 and index_receive == 2:  # 波形模式
             self.graphicsView.add_new_data(self.uart.wave_paras)
-        elif index == -1:  # 修改参数成功
+        elif index_receive == -1:  # 修改参数成功
             # ss = self.uart.standard_rx_data[1:].data().decode(errors='ignore')
             # self.uart.standard_rx_data.clear()
             if len(self.uart.list_of_msg) > 0:

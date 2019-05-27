@@ -438,8 +438,11 @@ class Ui_MainWindow(object):
         self.action_exit.setObjectName("action_exit")
         self.actionAbout_Qt = QtWidgets.QAction(MainWindow)
         self.actionAbout_Qt.setObjectName("actionAbout_Qt")
+        self.actionAboutThis = QtWidgets.QAction(MainWindow)
+        self.actionAboutThis.setObjectName("actionAboutThis")
         self.menu.addAction(self.action_exit)
         self.menu_2.addAction(self.actionAbout_Qt)
+        self.menu_2.addAction(self.actionAboutThis)
         self.menu_3.addAction(self.action_uart)
         self.menubar.addAction(self.menu.menuAction())
         self.menubar.addAction(self.menu_3.menuAction())
@@ -537,6 +540,7 @@ class Ui_MainWindow(object):
         self.action_exit.setText(_translate("MainWindow", "退出(&T)"))
         self.action_exit.setShortcut(_translate("MainWindow", "Ctrl+Q"))
         self.actionAbout_Qt.setText(_translate("MainWindow", "About &Qt"))
+        self.actionAboutThis.setText(_translate("MainWindow", "关于(&A)"))
 
 
 from Widget.Piano import PianoView

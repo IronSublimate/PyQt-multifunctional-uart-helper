@@ -61,3 +61,9 @@ class DynamicWaveView(QChartView):
                 self.chart().setAxisX(self.ax, ls)
                 self.chart().setAxisY(self.ay, ls)
                 self.lines[key] = ls
+
+    def clear(self):
+        self.ymax = 0
+        self.ymin = 0
+        self.lines.clear()
+
