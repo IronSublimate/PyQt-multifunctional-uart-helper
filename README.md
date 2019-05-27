@@ -1,5 +1,5 @@
 # PyQt5-SerialPort-Stable
-#### PyQt5 智能车串口调试助手稳定版  
+#### PyQt5 串口调试助手稳定版  
 
 --- 
 >作者：侯宇轩  
