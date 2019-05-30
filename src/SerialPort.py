@@ -342,6 +342,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                     self.tableWidget_para.insertRow(length)
                     self.tableWidget_para.setItem(length, 0, QTableWidgetItem(key))
                     self.tableWidget_para.setItem(length, 1, QTableWidgetItem(value))
+                    self.tableWidget_para.sortByColumn(0,0)
 
             for key in self.uart.wave_paras:
                 lis = self.tableWidget_para.findItems(key, Qt.MatchExactly)
@@ -354,6 +355,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                     self.tableWidget_para.insertRow(length)
                     self.tableWidget_para.setItem(length, 0, QTableWidgetItem(key))
                     self.tableWidget_para.setItem(length, 1, QTableWidgetItem(value))
+                    self.tableWidget_para.sortByColumn(0, 0)
 
         elif index == 1 and index_receive == 1:  # 改参数模式
             # item.paras.value = value
