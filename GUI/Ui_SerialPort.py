@@ -36,8 +36,8 @@ class Ui_MainWindow(object):
         self.textEdit_Recive.setHtml("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Noto Sans\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'SimSun\'; font-size:9pt;\"><br /></p></body></html>")
+"</style></head><body style=\" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>")
         self.textEdit_Recive.setAcceptRichText(False)
         self.textEdit_Recive.setObjectName("textEdit_Recive")
         self.gridLayout_3.addWidget(self.textEdit_Recive, 2, 0, 1, 1)
@@ -279,7 +279,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.addWidget(self.tabWidget)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1142, 30))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1142, 26))
         self.menubar.setObjectName("menubar")
         self.menu = QtWidgets.QMenu(self.menubar)
         self.menu.setObjectName("menu")
@@ -440,6 +440,9 @@ class Ui_MainWindow(object):
         self.actionAbout_Qt.setObjectName("actionAbout_Qt")
         self.actionAboutThis = QtWidgets.QAction(MainWindow)
         self.actionAboutThis.setObjectName("actionAboutThis")
+        self.action_stop = QtWidgets.QAction(MainWindow)
+        self.action_stop.setObjectName("action_stop")
+        self.menu.addAction(self.action_stop)
         self.menu.addAction(self.action_exit)
         self.menu_2.addAction(self.actionAbout_Qt)
         self.menu_2.addAction(self.actionAboutThis)
@@ -541,6 +544,9 @@ class Ui_MainWindow(object):
         self.action_exit.setShortcut(_translate("MainWindow", "Ctrl+Q"))
         self.actionAbout_Qt.setText(_translate("MainWindow", "About &Qt"))
         self.actionAboutThis.setText(_translate("MainWindow", "关于(&A)"))
+        self.action_stop.setText(_translate("MainWindow", "停车(&S)"))
+        self.action_stop.setToolTip(_translate("MainWindow", "停车(S)"))
+        self.action_stop.setShortcut(_translate("MainWindow", "Ctrl+T"))
 
 
 from Widget.Piano import PianoView

@@ -1,9 +1,9 @@
 import random
 
 from PyQt5.QtChart import QChartView, QChart, QLineSeries, QSplineSeries, QValueAxis
-from PyQt5.QtCore import QTime, Qt
+from PyQt5.QtCore import QTime, Qt, QThread
 from PyQt5.QtGui import QPainter, QColor
-
+from queue import Queue
 
 class DynamicWaveView(QChartView):
     def __init__(self, parent=None):
@@ -50,6 +50,10 @@ class DynamicWaveView(QChartView):
                 self.ymin = value
                 self.ay.setRange(self.ymin, self.ymax)
             if key in self.lines:
+                if self.lines[key].__len__() >= 32:
+                    # self.lines[key].replace(0,self.x, value)
+                    self.lines[key].remove(0)
+                # else:
                 self.lines[key].append(self.x, value)
             else:
                 # ls = QSplineSeries(self)
@@ -66,4 +70,16 @@ class DynamicWaveView(QChartView):
         self.ymax = 0
         self.ymin = 0
         self.lines.clear()
+
+
+class WaveThread(QThread):
+    def __init__(self, view: DynamicWaveView, parent=None):
+        super(WaveThread, self).__init__(parent)
+        self.d_view = view
+        self.dic_queue = Queue(maxsize=64)
+
+    def run(self):
+        # for dic in self.dic_queue:
+        while True:
+            self.d_view.add_new_data(self.dic_queue.get())
 

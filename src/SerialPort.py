@@ -12,7 +12,7 @@ from PyQt5.QtSerialPort import QSerialPort, QSerialPortInfo
 from PyQt5.QtWidgets import QMainWindow, QListWidgetItem, QMessageBox, QTableWidgetItem
 from PyQt5.QtGui import QImage, QPixmap, QTextCursor
 from PyQt5.Qt import QApplication
-
+from PyQt5.QtCore import QThread
 # from PyQt5.QtWebEngineWidgets import *
 from GUI.Ui_SerialPort import Ui_MainWindow
 # from PyQt5.QtCore import QDate
@@ -22,6 +22,7 @@ from GUI.ParaItem import Widget_ParaItem
 # from Widget.widgetpainter import WidgetPainter
 # import parameter
 from src.uart import Uart
+from Widget.Wave import WaveThread
 
 
 # import bitarray
@@ -52,6 +53,13 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         # Qt ListWidget 类
         self.paraWidgets = dict()
         self.cb_index = 0
+
+        # Wave
+        self.wave_thread = WaveThread(self.graphicsView)
+
+        self.graphicsView.moveToThread(self.wave_thread)
+        self.wave_thread.start()
+
         # 弹琴
 
         # self.imgbyte=bitarray.bitarray(endian='big')
@@ -112,6 +120,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.action_exit.triggered.connect(lambda: QApplication.exit())
         self.actionAbout_Qt.triggered.connect(lambda: QMessageBox.aboutQt(self, "About Qt"))
         self.actionAboutThis.triggered.connect(self.on_about_this)
+        self.action_stop.triggered.connect(lambda: self.uart.write(b'\xc10 0\0'))
         # 跳转到 GitHub 查看源代码
         # def Goto_GitHub(self):
         #     self.browser = QWebEngineView()
@@ -271,7 +280,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
     def send_read_mcu(self):
         if self.uart.isOpen():
-            start = b'\xb3'
+            start = b'\xb3\x00'
             self.uart.write(start)
         #     self.uart.write(b'hyxr')
         #     self.ready_to_get_paras = True
@@ -342,7 +351,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                     self.tableWidget_para.insertRow(length)
                     self.tableWidget_para.setItem(length, 0, QTableWidgetItem(key))
                     self.tableWidget_para.setItem(length, 1, QTableWidgetItem(value))
-                    self.tableWidget_para.sortByColumn(0,0)
+                    self.tableWidget_para.sortByColumn(0, 0)
 
             for key in self.uart.wave_paras:
                 lis = self.tableWidget_para.findItems(key, Qt.MatchExactly)
@@ -399,7 +408,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             for k in error_keys:
                 del self.uart.change_paras[k]
         elif index == 2 and index_receive == 2:  # 波形模式
-            self.graphicsView.add_new_data(self.uart.wave_paras)
+            # self.graphicsView.add_new_data(self.uart.wave_paras)
+            if not self.wave_thread.dic_queue.full():
+                self.wave_thread.dic_queue.put(self.uart.wave_paras)
         elif index_receive == -1:  # 修改参数成功
             # ss = self.uart.standard_rx_data[1:].data().decode(errors='ignore')
             # self.uart.standard_rx_data.clear()
