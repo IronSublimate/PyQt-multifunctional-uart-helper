@@ -7,8 +7,12 @@
 > [参考代码](https://github.com/Oslomayor/PyQt5-SerialPort-Stable)  
 ---
 
+## 界面展示
+![](./help/1.png)
+
 ## 所用python库
 1. PyQt5
+2. pyqtchart
 
 ## 使用说明
 1. 接收发送数据为普通的串口功能
